@@ -1,0 +1,17 @@
+#Define the name of the place where DC will write it's working files
+#define_design_lib WORK -path ./work
+
+###########################################################################################
+# Specify libraries
+###########################################################################################
+
+#Define the path to DC and to the technology library
+set search_path [list . /eda/synopsys/syn_current_64.18/libraries/syn /eda/dk/nangate45/synopsys ]
+
+#Specifies the list of design files and libraries used during linking
+set link_library [list "*" "NangateOpenCellLibrary_typical_ecsm_nowlm.db" "dw_foundation.sldb" ]
+
+#Specifies the list of technology libraries of components to be used when compiling a design
+set target_library [list "NangateOpenCellLibrary_typical_ecsm_nowlm.db" ]
+
+set synthetic_library [list "dw_foundation.sldb" ]
