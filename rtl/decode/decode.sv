@@ -1,34 +1,31 @@
-module decodeUnit #(parameter nbits = 32, bits = 16) (
+module decodeUnit #(parameter nbits = 64, bits = 32) (
   input logic clk,
   input logic rst,
-  input logic RegA_LATCH_EN,
-  input logic RegB_LATCH_EN,
-  input logic RegIMM_LATCH_EN,
-  input logic RF_WE,
-  input logic [nbits-1:0] DATAIN,
-  input logic [nbits-1:0] IR_OUT,
-  output logic [nbits-1:0] A_out,
-  output logic [nbits-1:0] B_out,
+  input logic RegA_LATCH_EN, // from CU
+  input logic RegB_LATCH_EN, // from CU
+  input logic RegIMM_LATCH_EN, // from CU
+  input logic RF_WE, // from CU
+  input logic [nbits-1:0] DATAIN, // from WB
+  output logic [nbits-1:0] RD1,
+  output logic [nbits-1:0] RD2,
   output logic [nbits-1:0] Imm_out,
-  input logic [nbits-1:0] IR_IN2,
-  output logic [nbits-1:0] IR_OUT2,
+  input logic [nbits-1:0] IR_IN,
   input logic [nbits-1:0] NPC_IN,
-  output logic [nbits-1:0] NPC2_OUT
+  output logic [nbits-1:0] NPC_OUT
 );
 
-  logic [nbits-1:0] RegisterAout, RegisterBout, RegisterImmOut;
+  logic [nbits-1:0] RegisterAout, RegisterBout;
   logic [bits-1:0] signExtIn;
-  logic [nbits-1:0] signExtOut, RF_out1, RF_out2;
+  logic [nbits-1:0] RF_out1, RF_out2;
   logic [4:0] RS1, RS2, WR_ADDR;
-  logic [nbits-1:0] datainRF, IR_OUTs, IR_IN2s, IR_OUT2s, NPC_INs, NPC2_OUTs;
 
   // Register components declaration
   register_generic #(nbits) NPC2 (
-    .data_in(NPC_INs),
+    .data_in(NPC_IN),
     .CK(clk),
     .RESET(rst),
-    .ENABLE(1'b1),
-    .data_out(NPC2_OUTs)
+    .ENABLE(1'b1), //Always enabled
+    .data_out(NPC_OUT)
   );
 
   register_generic #(nbits) Imm (
@@ -36,15 +33,7 @@ module decodeUnit #(parameter nbits = 32, bits = 16) (
     .CK(clk),
     .RESET(rst),
     .ENABLE(RegIMM_LATCH_EN),
-    .data_out(RegisterImmOut)
-  );
-
-  register_generic #(nbits) IR2 (
-    .data_in(IR_OUTs),
-    .CK(clk),
-    .RESET(rst),
-    .ENABLE(1'b1),
-    .data_out(IR_OUT2s)
+    .data_out(Imm_out)
   );
 
   SIGN_EXT #(bits) Signext (
@@ -55,49 +44,38 @@ module decodeUnit #(parameter nbits = 32, bits = 16) (
   REGISTER_FILE #(nbits) RF (
     .CLK(clk),
     .RESET(rst),
-    .ENABLE(1'b1), 
-    .RD1(1'b1), 
-    .RD2(1'b1), 
+    .ENABLE(1'b1), //Always enabled
+    .RD1(1'b1), //Always enabled
+    .RD2(1'b1), //Always enabled
     .WR(RF_WE),
     .ADD_RD1(RS1),
     .ADD_RD2(RS2),
     .ADD_WR(WR_ADDR),
-    .DATAIN(datainRF),
+    .DATAIN(DATAIN),
     .OUT1(RF_out1),
     .OUT2(RF_out2)
   );
 
-  // Signal assignments
-  assign RS1 = IR_OUT[25:21];
-  assign RS2 = IR_OUT[20:16];
-  assign WR_ADDR = (IR_IN2[31:26] == 6'b0) ? IR_IN2[15:11] : IR_IN2[20:16];
-  assign IR_OUTs = IR_OUT;
-  assign IR_OUT2 = IR_OUT2s;
-  assign IR_IN2s = IR_IN2;
-  assign signExtIn = IR_OUT[15:0];
-  assign A_out = RF_out1;
-  assign B_out = RF_out2;
-  assign Imm_out = RegisterImmOut;
-  assign datainRF = DATAIN;
-  assign NPC_INs = NPC_IN;
-  assign NPC2_OUT = NPC2_OUTs;
+   register_generic #(nbits) IR2 (
+    .data_in(RF_out1),
+    .CK(clk),
+    .RESET(rst),
+    .ENABLE(RegA_LATCH_EN),
+    .data_out(RD1)
+  );
 
-endmodule
+   register_generic #(nbits) IR2 (
+    .data_in(RF_out2),
+    .CK(clk),
+    .RESET(rst),
+    .ENABLE(RegB_LATCH_EN),
+    .data_out(RD2)
+  );
 
-module register_generic #(parameter nbits = 32) (
-  input logic [nbits-1:0] data_in,
-  input logic CK,
-  input logic RESET,
-  input logic ENABLE,
-  output logic [nbits-1:0] data_out
-);
-
-  always @(posedge CK or negedge RESET) begin
-    if (!RESET) begin
-      data_out <= 0;
-    end else if (ENABLE) begin
-      data_out <= data_in;
-    end
-  end
+  // Signal assignments TO CHANGE WHEN WE DO THE CU
+  assign RS1 = IR_IN[25:21];
+  assign RS2 = IR_IN[20:16];
+  assign WR_ADDR = (IR_IN[31:26] == 6'b0) ? IR_IN[15:11] : IR_IN[20:16];
+  assign signExtIn = IR_IN[15:0];
 
 endmodule
