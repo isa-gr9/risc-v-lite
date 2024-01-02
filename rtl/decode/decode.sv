@@ -1,4 +1,4 @@
-module decodeUnit #(parameter nbits = 64, bits = 32) (
+module decodeUnit #(parameter nbits = 32, bits = 32) (
   input logic clk,
   input logic rst,
   input logic RegA_LATCH_EN, // from CU
@@ -14,9 +14,7 @@ module decodeUnit #(parameter nbits = 64, bits = 32) (
   output logic [nbits-1:0] NPC_OUT
 );
 
-  logic [nbits-1:0] RegisterAout, RegisterBout;
-  logic [bits-1:0] signExtIn;
-  logic [nbits-1:0] RF_out1, RF_out2;
+  logic [nbits-1:0] RF_out1, RF_out2, signExtOut;
   logic [4:0] RS1, RS2, WR_ADDR;
 
   // Register components declaration
@@ -36,10 +34,13 @@ module decodeUnit #(parameter nbits = 64, bits = 32) (
     .data_out(Imm_out)
   );
 
-  SIGN_EXT #(bits) Signext (
-    .inputt(signExtIn),
-    .outputt(signExtOut)
-  );
+ register_generator #(nbits) RG (
+  .IR_IN(IR_IN),
+  .RS1(RS1),
+  .RS2(RS2),
+  .RD(WR_ADDR),
+  .IMM(signExtOut)
+ );
 
   REGISTER_FILE #(nbits) RF (
     .CLK(clk),
@@ -64,18 +65,12 @@ module decodeUnit #(parameter nbits = 64, bits = 32) (
     .data_out(RD1)
   );
 
-   register_generic #(nbits) IR2 (
+   register_generic #(nbits) IR3 (
     .data_in(RF_out2),
     .CK(clk),
     .RESET(rst),
     .ENABLE(RegB_LATCH_EN),
     .data_out(RD2)
   );
-
-  // Signal assignments TO CHANGE WHEN WE DO THE CU
-  assign RS1 = IR_IN[25:21];
-  assign RS2 = IR_IN[20:16];
-  assign WR_ADDR = (IR_IN[31:26] == 6'b0) ? IR_IN[15:11] : IR_IN[20:16];
-  assign signExtIn = IR_IN[15:0];
 
 endmodule

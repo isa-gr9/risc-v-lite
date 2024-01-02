@@ -1,4 +1,4 @@
-module REGISTER_FILE #(parameter NBITS = 64, NREGISTERS = 32) (
+module REGISTER_FILE #(parameter NBITS = 32, NREGISTERS = 32) (
   input logic CLK,
   input logic RESET,
   input logic ENABLE,

@@ -1,4 +1,4 @@
-module ALU #(parameter N = 64) (
+module ALU #(parameter N = 32) (
     input logic [N-1:0] A, B,   // Input operands
     input logic [3:0] Op,        // Operation selector
     output logic [N-1:0] result,   // ALU result

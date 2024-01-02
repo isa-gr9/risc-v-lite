@@ -3,7 +3,7 @@
 
 
 module tb_exe;
-    parameter N=64;
+    parameter N=32;
 
     logic clk = 1'b0;
     logic rst = 1'b1;
@@ -30,37 +30,37 @@ end
 
 initial begin
 
-    PCin = 64'h400004;  //addi gp,gp,16
-    A = 64'h1fc18;
-    B = 64'h00000000;
-    Imm = 64'h00000010; //16
+    PCin = 32'h400004;  //addi gp,gp,16
+    A = 32'h1fc18;
+    B = 32'h00000000;
+    Imm = 32'h00000010; //16
     MUXsel = 1'b1; //Select Imm
     AluCTR = 4'b0001; //addition
 
     repeat(3) @(posedge clk);
 
-    PCin = 64'h400088;  //sub	a1,a1,a4
-    A = 64'h21d; //541
-    B = 64'h266; //614
-    Imm = 64'h00000010; //16
+    PCin = 32'h400088;  //sub	a1,a1,a4
+    A = 32'h21d; //541
+    B = 32'h266; //614
+    Imm = 32'h00000010; //16
     MUXsel = 1'b0; //Select B
     AluCTR = 4'b0010; //subtraction
 
     repeat(3) @(posedge clk);
 
-    PCin = 64'h4000b4;  //ble	a1,a4,4000bc
-    A = 64'h21d; //541
-    B = 64'h266; //614
-    Imm = 64'h8;
+    PCin = 32'h4000b4;  //ble	a1,a4,4000bc
+    A = 32'h21d; //541
+    B = 32'h266; //614
+    Imm = 32'h4;
     MUXsel = 1'b0; //Select B
     AluCTR = 4'b1011; //LEQ
 
     repeat(3) @(posedge clk);
 
-    PCin = 64'h4000b4;  //ble	a1,a4,4000bc
-    A = 64'h266; //614 
-    B = 64'h21d; //541
-    Imm = 64'h8; 
+    PCin = 32'h4000b4;  //ble	a1,a4,4000bc
+    A = 32'h266; //614 
+    B = 32'h21d; //541
+    Imm = 32'h4; 
     MUXsel = 1'b0; //Select B
     AluCTR = 4'b1011; //LEQ
     

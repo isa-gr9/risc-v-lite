@@ -1,4 +1,4 @@
-module execute #(parameter N = 64) (
+module execute #(parameter N = 32) (
     input logic clk,
     input logic rst,
     input logic regEn,         //fromCU!!
@@ -22,8 +22,7 @@ module execute #(parameter N = 64) (
     //branch target address generation
     always_comb
         begin
-            NPC = NPCin + Imm; 
-            //NPC = NPCin + (Imm << 1);
+            NPC = NPCin + (Imm << 1);
         end 
         
     //ALU operand selection
