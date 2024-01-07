@@ -1,0 +1,246 @@
+m255
+K4
+z2
+!s11f MIXED_VERSIONS
+!s11e vcom 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/gianluca/Desktop/git/isa/risc-v-lite/rtl/fetch
+Eclk_gen
+Z1 w1692711455
+Z2 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+Z3 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
+Z4 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z5 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 2
+R0
+Z6 8../../material/obi/tb/clk_gen.vhd
+Z7 F../../material/obi/tb/clk_gen.vhd
+l0
+L6 1
+VNaWj[]:I_Ld49>Z<bAZ:B0
+!s100 Z9AC]5=[E;C9<dQbVg6e20
+Z8 OV;C;2020.1;71
+32
+Z9 !s110 1704651881
+!i10b 1
+Z10 !s108 1704651881.000000
+Z11 !s90 -work|work|../../material/obi/tb/clk_gen.vhd|
+Z12 !s107 ../../material/obi/tb/clk_gen.vhd|
+!i113 1
+Z13 o-work work
+Z14 tExplicit 1 CvgOpt 0
+Abeh
+R2
+R3
+R4
+R5
+DEx4 work 7 clk_gen 0 22 NaWj[]:I_Ld49>Z<bAZ:B0
+!i122 2
+l18
+L14 23
+VMBA69<_Wg7Ge@WMo;SE=:0
+!s100 DYl6?:LjA?n^fbQfCMLMb1
+R8
+32
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 1
+R13
+R14
+Edata_dumper
+Z15 w1693243360
+Z16 DPx4 ieee 16 std_logic_textio 0 22 ^l:n6VFdg74Q?CKDhjD]D3
+R2
+R3
+R4
+R5
+!i122 3
+R0
+Z17 8../../material/obi/tb/data_dumper.vhd
+Z18 F../../material/obi/tb/data_dumper.vhd
+l0
+Z19 L10 1
+VcUm5<l9lBTC5GnPlSd;og1
+!s100 W6nRV:XY:E3nQI5MgJKdA3
+R8
+32
+R9
+!i10b 1
+R10
+Z20 !s90 -work|work|../../material/obi/tb/data_dumper.vhd|
+Z21 !s107 ../../material/obi/tb/data_dumper.vhd|
+!i113 1
+R13
+R14
+Abeh
+R16
+R2
+R3
+R4
+R5
+DEx4 work 11 data_dumper 0 22 cUm5<l9lBTC5GnPlSd;og1
+!i122 3
+l22
+L20 19
+V=flah8j?9SPcDLm_=hJKM1
+!s100 SG0cz8e0kmP8J0>l6@<L02
+R8
+32
+R9
+!i10b 1
+R10
+R20
+R21
+!i113 1
+R13
+R14
+vfetcher
+DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+R9
+!i10b 1
+!s100 0TCX_SEMU4SeCIJ3M2Rbk2
+Z22 !s11b Dg1SIo80bB@j0V0VzS_@n1
+Im9z1<R0CYOzcCQYDN2Jfi0
+Z23 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+w1704643805
+8fetcher.sv
+Ffetcher.sv
+!i122 4
+L0 1 32
+Z24 OV;L;2020.1;71
+r1
+!s85 0
+31
+R10
+!s107 fetcher.sv|
+!s90 -reportprogress|300|-work|work|fetcher.sv|
+!i113 1
+R13
+Z25 tCvgOpt 0
+Ereq_gen
+Z26 w1691077402
+R16
+R2
+R3
+R4
+R5
+!i122 0
+R0
+Z27 8../../material/obi/tb/req_gen.vhd
+Z28 F../../material/obi/tb/req_gen.vhd
+l0
+R19
+VjKelUPk]0MUcAi:H[7;nM1
+!s100 HknY`_hFe2oge8fdTD@4>2
+R8
+32
+R9
+!i10b 1
+R10
+Z29 !s90 -work|work|../../material/obi/tb/req_gen.vhd|
+Z30 !s107 ../../material/obi/tb/req_gen.vhd|
+!i113 1
+R13
+R14
+Abeh
+R16
+R2
+R3
+R4
+R5
+DEx4 work 7 req_gen 0 22 jKelUPk]0MUcAi:H[7;nM1
+!i122 0
+l64
+L25 149
+VMaMTcARIC?M985VMeQ3@o2
+!s100 nlLQz7=]ggjP0g`;G81g92
+R8
+32
+R9
+!i10b 1
+R10
+R29
+R30
+!i113 1
+R13
+R14
+Ereq_gen_fast
+Z31 w1691077418
+R16
+R2
+R3
+R4
+R5
+!i122 1
+R0
+Z32 8../../material/obi/tb/req_gen_fast.vhd
+Z33 F../../material/obi/tb/req_gen_fast.vhd
+l0
+R19
+VE`Rfc98;36YihS^:`fTbL3
+!s100 Ic_Idm_Q_hg4^4IG_W:<50
+R8
+32
+R9
+!i10b 1
+R10
+Z34 !s90 -work|work|../../material/obi/tb/req_gen_fast.vhd|
+Z35 !s107 ../../material/obi/tb/req_gen_fast.vhd|
+!i113 1
+R13
+R14
+Abeh
+R16
+R2
+R3
+R4
+R5
+DEx4 work 12 req_gen_fast 0 22 E`Rfc98;36YihS^:`fTbL3
+!i122 1
+l64
+L25 112
+VdTLzFF=5APk7Nf`DC=75Y0
+!s100 H_B:K[WG:e?636k6mk51o3
+R8
+32
+R9
+!i10b 1
+R10
+R34
+R35
+!i113 1
+R13
+R14
+vtb_mem_wrap_fake
+R9
+!i10b 1
+!s100 oz2MfCaM<ZhbFQl]:@_I73
+R22
+IEIOTamNf7efEO8RhRi?YM2
+R23
+R0
+w1704643940
+8tb_mem_wrap_fake.v
+Ftb_mem_wrap_fake.v
+!i122 5
+L0 3 88
+R24
+r1
+!s85 0
+31
+R10
+!s107 tb_mem_wrap_fake.v|
+!s90 -work|work|tb_mem_wrap_fake.v|
+!i113 1
+R13
+R25

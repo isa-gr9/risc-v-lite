@@ -1,0 +1,21 @@
+# ERROR: No extended dataflow license exists
+# vsim -t ps -L ./mem_wrap -do "wave2.0.do" work.tb_mem_wrap_fake -voptargs="+acc" 
+# Start time: 19:24:44 on Jan 07,2024
+# Loading work.tb_mem_wrap_fake
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading work.clk_gen(beh)
+# Loading ieee.std_logic_textio(body)
+# Loading work.req_gen(beh)
+# Refreshing /home/gianluca/Desktop/git/isa/risc-v-lite/rtl/fetch/mem_wrap.mem_wrap_fake(beh)
+# ** Error (suppressible): (vcom-12110) The -novopt option has no effect on this product. -novopt option is now deprecated and will be removed in future releases.
+# ** Error: vcom failed.
+# subinvocation of vcom failed; return status = 1.
+# ** Error: (vsim-3171) Could not find machine code for '/home/gianluca/Desktop/git/isa/risc-v-lite/rtl/fetch/mem_wrap.mem_wrap_fake(beh)'.
+# No such file or directory. (errno = ENOENT)
+# Error loading design
+# End time: 19:24:44 on Jan 07,2024, Elapsed time: 0:00:00
+# Errors: 2, Warnings: 0

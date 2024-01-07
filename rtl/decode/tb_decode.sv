@@ -3,7 +3,7 @@
 
 
 module tb_decode;
-    parameter nbits=64;
+    parameter nbits=32;
 
     logic clk = 1'b0;
     logic rst = 1'b1;
@@ -32,7 +32,7 @@ initial begin
     IR_IN = 32'hff010113; //addi	sp,sp,-16
     NPC_IN = 32'h400038;
     RF_WE = 1'b1;
-    DATAIN = 64'h00000010; //INVENTED
+    DATAIN = 32'h00000010; //INVENTED
 
     repeat(3) @(posedge clk);
 
@@ -51,7 +51,7 @@ initial begin
     IR_IN = 32'h0106a423 ; //sw	a6,8(a3)
     NPC_IN = 32'h400100;
     RF_WE = 1'b1;
-    DATAIN = 64'h01000100; //INVENTED
+    DATAIN = 32'h01000100; //INVENTED
     
 end
 endmodule

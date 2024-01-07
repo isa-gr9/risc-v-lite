@@ -1,7 +1,7 @@
 module fetch_unit #(parameter bits=32) (
     input logic clk, rst,
-    input logic j; //select bit for the next program counter
-    input logic mem_ready, valid; // from MEM
+    input logic j, //select bit for the next program counter
+    input logic mem_ready, valid, // from MEM
     input logic [bits-1:0] Rdata, // from MEM
     input logic [bits-1:0] jPC,
     output logic proc_req, // to the MEM
@@ -11,7 +11,7 @@ module fetch_unit #(parameter bits=32) (
     output logic [bits-1:0] IR
 );
 
-logic [bits-1] PC_add, PC_in, PC_in2, IR_in;
+logic [bits-1:0] PC_add, PC_in, PC_in2, IR_in;
 
 MUX21_GENERIC #(bits) mux(
     .A(PC_add),
@@ -20,12 +20,12 @@ MUX21_GENERIC #(bits) mux(
     .Y(PC_in)
 );
 
-register_generic #(bits) nPC(
+register_generic #(bits) nPC1(
     .data_in(PC_in),
     .CK(clk),
     .RESET(rst),
     .ENABLE(1'b1),
-    .Q(PC_in2)
+    .data_out(PC_in2)
 );
 
 adder #(bits) add(
@@ -33,7 +33,7 @@ adder #(bits) add(
     .NPC(PC_add)
 );
 
-fetcher #(bits) fetcher(
+fetcher #(bits) fetch(
     .clk(clk),
     .reset_n(rst),
     .PC(PC_in2),
@@ -46,28 +46,28 @@ fetcher #(bits) fetcher(
 );
 
 //Pipeline registers
-register_generic #(bits) nPC(
+register_generic #(bits) nPC2(
     .data_in(PC_add),
     .CK(clk),
     .RESET(rst),
     .ENABLE(1'b1),
-    .Q(NPC)
+    .data_out(NPC)
 );
 
-register_generic #(bits) nPC(
+register_generic #(bits) nPC3(
     .data_in(PC_in2),
     .CK(clk),
     .RESET(rst),
     .ENABLE(1'b1),
-    .Q(PC)
+    .data_out(PC)
 );
 
-register_generic #(bits) nPC(
+register_generic #(bits) nIR(
     .data_in(IR_in),
     .CK(clk),
     .RESET(rst),
     .ENABLE(1'b1),
-    .Q(IR)
+    .data_out(IR)
 );
 
 endmodule
