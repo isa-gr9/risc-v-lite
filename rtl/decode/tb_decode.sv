@@ -38,8 +38,8 @@ initial begin
 
     IR_IN = 32'h100107b7; //lui	a5,0x10010
     NPC_IN = 32'h400024;
-    RF_WE = 1'b0;
-
+    RF_WE = 1'b1;
+    DATAIN = 32'h10010000;
     repeat(3) @(posedge clk);
     
     IR_IN = 32'h00e5d463; //ble	a4,a1,400088
@@ -50,7 +50,7 @@ initial begin
 
     IR_IN = 32'h0106a423 ; //sw	a6,8(a3)
     NPC_IN = 32'h400100;
-    RF_WE = 1'b1;
+    RF_WE = 1'b0;
     DATAIN = 32'h01000100; //INVENTED
     
 end

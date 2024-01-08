@@ -22,7 +22,7 @@ module execute #(parameter N = 32) (
     //branch target address generation
     always_comb
         begin
-            NPC = NPCin + (Imm << 1);
+            NPC = NPCin + {Imm, 1'b0};
         end 
         
     //ALU operand selection
