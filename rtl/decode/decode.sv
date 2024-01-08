@@ -10,6 +10,8 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
   output logic [nbits-1:0] RD2,
   output logic [nbits-1:0] Imm_out,
   input logic [nbits-1:0] IR_IN,
+  input logic [nbits-1:0] NPC4_IN,
+  output logic [nbits-1:0] NPC4_OUT,
   input logic [nbits-1:0] NPC_IN,
   output logic [nbits-1:0] NPC_OUT
 );
@@ -24,6 +26,14 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
     .RESET(rst),
     .ENABLE(1'b1), //Always enabled
     .data_out(NPC_OUT)
+  );
+
+  register_generic #(nbits) NPC4 (
+    .data_in(NPC4_IN),
+    .CK(clk),
+    .RESET(rst),
+    .ENABLE(1'b1), //Always enabled
+    .data_out(NPC4_OUT)
   );
 
   register_generic #(nbits) Imm (

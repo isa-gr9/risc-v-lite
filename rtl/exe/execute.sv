@@ -2,7 +2,9 @@ module execute #(parameter N = 32) (
     input logic clk,
     input logic rst,
     input logic regEn,         //fromCU!!
-    input logic [N-1:0] NPCin,   
+    input logic [N-1:0] NPCin,  
+    input logic [N-1:0] NPC4in,
+    output logic [N-1:0] NPC4out, 
     input logic [N-1:0] A,        
     input logic [N-1:0] B,
     input logic [N-1:0] Imm,
@@ -11,6 +13,7 @@ module execute #(parameter N = 32) (
     output logic [N-1:0] NPCbranch,
     output logic [N-1:0] ALUres,
     output logic [N-1:0] Bout,
+    output logic [N-1:0] ImmOUT,
     output logic zero   
 );
 
@@ -42,7 +45,7 @@ module execute #(parameter N = 32) (
         .zero(ZEROout)
         );
 
-            //pipeline registers
+    //pipeline registers
     register_generic #(N) NPCbranch_REG_EXMEM (
         .data_in(NPC),
         .CK(clk),
@@ -67,12 +70,28 @@ module execute #(parameter N = 32) (
         .data_out(Bout)
     );
 
-    register_generic #(N) ZERO_REG_EXMEM (
-        .data_in(ZEROout),
+    FD zero_FD (
+        .CK(clk),
+        .RESET(rst),
+        .D(ZEROout),
+        .ENABLE(regEn),
+        .Q(zero)
+    );
+
+    register_generic #(N) NPC4_REG_EXMEM (
+        .data_in(NPC4_IN),
         .CK(clk),
         .RESET(rst),
         .ENABLE(regEn),
-        .data_out(zero)
+        .data_out(NPC4_OUT)
+    );
+
+    register_generic #(N) IMM_REG_EXMEM (
+        .data_in(Imm),
+        .CK(clk),
+        .RESET(rst),
+        .ENABLE(regEn),
+        .data_out(ImmOUT)
     );
 
  endmodule
