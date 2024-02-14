@@ -36,7 +36,7 @@ module cu (
             7'b0010011: cw = 12'b1_1_1_0_0_00_0_0_00_0;  //ADDI
             7'b0010111: cw = 12'b1_1_0_0_0_00_0_0_00_0;  //AUIPC
             7'b0110111: cw = 12'b1_1_x_0_0_00_0_0_00_0;  //LUI
-            7'b1100011: cw = 12'b0_0_0_0_0_00_1_0_xx_0;  //BRANCH
+            7'b1100011: cw = 12'b0_0_0_0_0_00_1_0_00_0;  //BRANCH
             7'b1101111: cw = 12'b1_1_0_0_0_10_0_1_00_0;  //JTYPE
             7'b1100111: cw = 12'b1_1_1_0_0_10_0_1_00_0;  //RET- jalr
             default:    cw = 12'bxxxxxxxxxxxx;           //unknown
@@ -44,10 +44,10 @@ module cu (
     end
 
     always_comb begin : aluControlLogic
-        case (aluopTmp)
-            2'b00: aluOp = 4'0001;  //add
-            2'b01: aluOp = 4'0010;  //sub
-            default: case ({func7bit5, func3})
+        casex (aluopTmp)
+            2'b00: aluOp = 4'b0001;  //add
+            2'b01: aluOp = 4'b0010;  //sub
+            default: casex ({func7bit5, func3})
                 4'b0000: aluOp = 4'b0001;  //add
                 4'b1000: aluOp = 4'b0010;  //sub
                 4'b0001: aluOp = 4'b0110;  //sll

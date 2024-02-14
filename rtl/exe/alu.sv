@@ -21,11 +21,11 @@ module ALU #(parameter N = 32) (
                 result = A | B;
             4'b0101:        // XOR
                 result = A ^ B;
-            4'b0110:        // LLS
+            4'b0110:        // sll
                 result = A << shift;
-            4'b0111: // LRS
+            4'b0111: // srl
                 result = A >> shift;
-            4'b1000: // ARS
+            4'b1000: // sra
                 result = A >>> shift;
             4'b1001: // EQ
                 zero = (A == B) ? 1'b1 : 1'b0;
