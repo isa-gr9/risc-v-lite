@@ -18,7 +18,7 @@ module REGISTER_FILE #(parameter NBITS = 32, NREGISTERS = 32) (
   logic [NBITS-1:0] tmp_out1;
   logic [NBITS-1:0] tmp_out2;
 
-  always @(posedge CLK) begin
+  always @(posedge CLK or posedge RESET) begin
     if (RESET) begin
       for (int i = 0; i < NREGISTERS; i++) begin
         REGISTERS[i] <= 0;
