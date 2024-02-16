@@ -12,24 +12,24 @@ module fetcher #(parameter bits = 32) (
     output logic proc_req   // flag needed by the req/rdy protocolmì, in the fetcher case will be always low (we only have to read from mem)
 );
     logic [31:0] addr_tmp;
-    logic proc_req_tmp;
+    logic proc_req_tmp, falling_edge_detected, prev_mem_ready;
 
 
     always_ff @(posedge clk or negedge rst) begin : memred
 
-        if (proc_req_tmp) begin
-            proc_req <= 1'b1;
-        end
+        //        if (proc_req_tmp) begin
+        //    proc_req <= 1'b1;
+        //end
         if(!rst) begin
-            proc_req <= 1'b0;
+          //  proc_req <= 1'b0;
             stall <= 1'b0;
         end
         else if (mem_rdy && proc_req_tmp && pc_en) begin
-            proc_req <= 1'b1;
+            //proc_req <= 1'b1;
             stall <= 1'b0;
         end
         else if(mem_rdy && proc_req_tmp && !pc_en) begin
-            proc_req <= 1'b0;
+            //proc_req <= 1'b0;
             stall <= 1'b0;
         end
         else if(!mem_rdy && !valid) begin
@@ -55,22 +55,38 @@ module fetcher #(parameter bits = 32) (
     end
 
 
-    always_ff @(posedge clk or posedge reset) begin
+    always_ff @(posedge clk or posedge rst) begin
         if (!rst) begin
             prev_mem_ready <= 1'b0; // Initialize to some default value
-            falling_edge_detected <= 1'b0;
         end else begin
-            if (prev_mem_ready && !mem_ready) begin
+            prev_mem_ready <= mem_rdy;
+        end
+
+
+        
+end
+
+    
+    always_comb 
+        begin 
+        if (!rst) 
+            falling_edge_detected <= 1'b0;
+        else
+        if (prev_mem_ready && !mem_rdy) begin
                 falling_edge_detected <= 1'b1;
             end else begin
                 falling_edge_detected <= 1'b0;
             end
-            prev_mem_ready <= mem_ready;
-        end
-
-        if (falling_edge_detected && valid) begin
             
-        end 
-end
+        if (falling_edge_detected && valid) begin
+            proc_req <= 1'b0;
+        end        
+        else if (falling_edge_detected && !valid)
+            proc_req  <= 1'b1;
+        else
+        if (proc_req_tmp) begin
+            proc_req <= 1'b1;
+        end
+        end
 
 endmodule
