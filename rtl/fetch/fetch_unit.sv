@@ -1,10 +1,29 @@
+module ifu #(parameter bits=32) (
+    input  logic clk, rst,
+    input  logic brjmp_ctrl,         // select bit for the next program counter
+    input  logic [bits-1:0] jpc,     // branch/jump pc
+    input  logic pc_en,              // control bit from CU
+    input  logic mem_rdy,            // from IMEM
+    input  logic valid,              // from IMEM
+    input  logic [bits-1:0] rdata,   // from IMEM
+    output logic proc_req,           // to IMEM
+    output logic [bits-1:0] pc,      // to IMEM and IF/ID
+    output logic stall,              // to CU
+    output logic [bits-1:0] npc,     // to IF/ID 
+    output logic [bits-1:0] ir       // to decode unit
+);
+endmodule
+
+
+
+
 module fetch_unit #(parameter bits=32) (
     input logic clk, rst,
-    input logic j, //select bit for the next program counter
-    input logic mem_rdy, valid, // from MEM
-    input logic [bits-1:0] Rdata, // from MEM
+    input logic j,                  //select bit for the next program counter
+    input logic mem_rdy, valid,     // from MEM
+    input logic [bits-1:0] Rdata,   // from MEM
     input logic [bits-1:0] jPC,
-    input logic PC_en, // control bit from the fetcher
+    input logic PC_en,              // control bit from the fetcher
     output logic proc_req, we,  // to the MEM
     output logic [bits-1:0] NPC,
     output logic [bits-1:0] PC,

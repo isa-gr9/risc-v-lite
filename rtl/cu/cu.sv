@@ -9,7 +9,8 @@ module cu (
     output logic        memWrite,
     output logic        memRead,
     output logic        jump,
-    output logic        lsReq
+    output logic        loadReq,
+    output logic        storeReq
 );
 
     logic [6:0]  opcode;
@@ -26,21 +27,24 @@ module cu (
 
 
     assign {regWrite, aluSrc1, aluSrc2, memWrite, memRead,
-            mem2reg, branch, jump, aluopTmp, lsReq} = cw;
+            mem2reg, branch, jump, aluopTmp, loadReq, storeReq} = cw;
 
+    /* stall: 0000000000000000010011*/
     always_comb begin : controlWord
-        casez (opcode)
-            7'b0000011: cw = 12'b1_1_1_0_1_01_0_0_00_1;  //LW
-            7'b0100011: cw = 12'b0_1_1_1_0_xx_0_0_00_1;  //SW
-            7'b0110011: cw = 12'b1_0_1_0_0_00_0_0_10_0;  //RTYPE
-            7'b0010011: cw = 12'b1_1_1_0_0_00_0_0_00_0;  //ADDI
-            7'b0010111: cw = 12'b1_1_0_0_0_00_0_0_00_0;  //AUIPC
-            7'b0110111: cw = 12'b1_1_x_0_0_00_0_0_00_0;  //LUI
-            7'b1100011: cw = 12'b0_0_0_0_0_00_1_0_00_0;  //BRANCH
-            7'b1101111: cw = 12'b1_1_0_0_0_10_0_1_00_0;  //JTYPE
-            7'b1100111: cw = 12'b1_1_1_0_0_10_0_1_00_0;  //RET- jalr
-            default:    cw = 12'bxxxxxxxxxxxx;           //unknown
-        endcase
+        begin
+            casez (opcode)
+                7'b0000011: cw = 13'b1_1_1_0_1_01_0_0_00_1_0;  //LW
+                7'b0100011: cw = 13'b0_1_1_1_0_xx_0_0_00_0_1;  //SW
+                7'b0110011: cw = 13'b1_0_1_0_0_00_0_0_10_0_0;  //RTYPE
+                7'b0010011: cw = 13'b1_1_1_0_0_00_0_0_00_0_0;  //ADDI
+                7'b0010111: cw = 13'b1_1_0_0_0_00_0_0_00_0_0;  //AUIPC
+                7'b0110111: cw = 13'b1_1_x_0_0_00_0_0_00_0_0;  //LUI
+                7'b1100011: cw = 13'b0_0_0_0_0_00_1_0_00_0_0;  //BRANCH
+                7'b1101111: cw = 13'b1_1_0_0_0_10_0_1_00_0_0;  //JTYPE
+                7'b1100111: cw = 13'b1_1_1_0_0_10_0_1_00_0_0;  //RET- jalr
+                default:    cw = 13'bxxxxxxxxxxxxx;           //unknown
+            endcase
+        end
     end
 
     always_comb begin : aluControlLogic

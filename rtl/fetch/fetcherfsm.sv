@@ -63,11 +63,11 @@ always@(cur_state, mem_rdy, valid) begin
         ADDR_PHASE: begin
             if(mem_rdy) begin
                 addr_tmp = fifo[j];
-                //next_state = RESPONSE_PHASE;
+                next_state = RESPONSE_PHASE;
             end
             if (valid) begin
                 response = RDATA;
-                //next_state = ADDR_PHASE;
+                next_state = ADDR_PHASE;
             end
         end
         RESPONSE_PHASE: begin

@@ -1,0 +1,61 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/riccardo/git/isa/risc-v-lite/rtl/fetch
+vfetcher
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1708120487
+!i10b 1
+!s100 GgnNKnnbZgC;jTzJMkA7e2
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+ImoZ>FM2b=HCJL2VTP>QKP3
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+w1708120474
+8fetcher.sv
+Ffetcher.sv
+!i122 0
+L0 1 58
+Z5 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z6 !s108 1708120487.000000
+!s107 fetcher.sv|
+!s90 -reportprogress|300|-work|work|fetcher.sv|
+!i113 1
+Z7 o-work work
+Z8 tCvgOpt 0
+vtb_fetcher
+R1
+R2
+!i10b 1
+!s100 [SAjJljVQHW@Nh5?jHSVX1
+R3
+Ih1abh?EJ[M90SJH:VU6I;0
+R4
+S1
+R0
+w1708119602
+8tb_fetcher.sv
+Ftb_fetcher.sv
+!i122 1
+L0 1 72
+R5
+r1
+!s85 0
+31
+R6
+!s107 tb_fetcher.sv|
+!s90 -reportprogress|300|-work|work|tb_fetcher.sv|
+!i113 1
+R7
+R8

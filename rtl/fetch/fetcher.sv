@@ -1,55 +1,76 @@
 module fetcher #(parameter bits = 32) (
-    input logic clk,     // Clock signal
-    input logic rst, // Active low reset signal
-    input logic [bits-1:0] ADDR_IN, // data received from the fetch stage; in the fetcher, it is the PC that has to be rcvd to memory
-    input logic mem_rdy, // flag from memory, it indicates it has received the address and it is elaborating the request
-    input logic valid, //flag from memory, it indicates that the operation has terminated
-    input logic enable,
-    input logic [bits-1:0] RDATA, // data (instruction in this case) read from memory, valid only if valid is high during its scan
-    output logic freeze,
-    output logic proc_req, we,    // flag needed by the req/rdy protocolmì, in the fetcher case will be always low (we only have to read from mem)
+    input  logic clk,
+    input  logic rst,                // Active low reset signal
+    input  logic mem_rdy,            // from IMEM
+    input  logic valid,              // from IMEM
+    input  logic pc_en,              // from PC
+    input  logic [bits-1:0] ADDR_IN, // from PC
+    input  logic [bits-1:0] RDATA, // data (instruction in this case) read from memory, valid only if valid is high during its scan
     output logic [bits-1:0] ADDR_OUT, //  address sent to memory (PC) needed to perform the read instructioin
-    output logic [bits-1:0] INSTR_OUT // data read from the memory, it represents the instruction that has to be fetched and pointed by PC
-  //  output logic PC_en // control bit sent to the PC register in the fetch unit to regulate the fetch operations
+    output logic [bits-1:0] INSTR_OUT, // data read from the memory, it represents the instruction that has to be fetched and pointed by PC
+    output logic stall,
+    output logic proc_req   // flag needed by the req/rdy protocolmì, in the fetcher case will be always low (we only have to read from mem)
 );
     logic [31:0] addr_tmp;
     logic proc_req_tmp;
 
 
-    always_ff @( posedge clk or negedge rst ) begin : memred
-        if(!rst) begin
-            ADDR_OUT <= 32'h00000000;
-        end
-        else if (mem_rdy && proc_req_tmp && enable) begin
-            ADDR_OUT <= addr_tmp;
+    always_ff @(posedge clk or negedge rst) begin : memred
+
+        if (proc_req_tmp) begin
             proc_req <= 1'b1;
-            freeze <= 1'b0;
         end
-        else if(mem_rdy && proc_req_tmp && !enable) begin
-            ADDR_OUT <= addr_tmp;
+        if(!rst) begin
             proc_req <= 1'b0;
-            freeze <= 1'b0;
+            stall <= 1'b0;
         end
-        else if(!mem_rdy) begin
-            freeze <= 1'b1;
+        else if (mem_rdy && proc_req_tmp && pc_en) begin
+            proc_req <= 1'b1;
+            stall <= 1'b0;
+        end
+        else if(mem_rdy && proc_req_tmp && !pc_en) begin
+            proc_req <= 1'b0;
+            stall <= 1'b0;
+        end
+        else if(!mem_rdy && !valid) begin
+            stall <= 1'b1;
         end
     end
 
-    always_comb begin : request
+    always@ (ADDR_IN) begin : request
         if(!rst) begin
             proc_req_tmp = 1'b0;
             addr_tmp = 32'b0; //??
         end
         else begin
             proc_req_tmp = 1'b1;
-            addr_tmp = ADDR_IN;
+            ADDR_OUT = ADDR_IN;
         end
     end
 
-    always_comb begin
+    always_comb begin : response
         if (valid) begin
             INSTR_OUT = RDATA;
         end
-        else INSTR_OUT = 32'hCAFECAFE;
     end
+
+
+    always_ff @(posedge clk or posedge reset) begin
+        if (!rst) begin
+            prev_mem_ready <= 1'b0; // Initialize to some default value
+            falling_edge_detected <= 1'b0;
+        end else begin
+            if (prev_mem_ready && !mem_ready) begin
+                falling_edge_detected <= 1'b1;
+            end else begin
+                falling_edge_detected <= 1'b0;
+            end
+            prev_mem_ready <= mem_ready;
+        end
+
+        if (falling_edge_detected && valid) begin
+            
+        end 
+end
+
 endmodule

@@ -5,8 +5,7 @@ set -e
 
 
 #COMPILE
-vlog -reportprogress 300 -work work fakemem.sv
-vlog -reportprogress 300 -work work fetcherfsm.sv
+vlog -reportprogress 300 -work work fetcher.sv
 
 
 #Testbench

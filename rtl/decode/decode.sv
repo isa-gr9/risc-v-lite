@@ -1,19 +1,40 @@
 module decodeUnit #(parameter nbits = 32, bits = 32) (
+  input  logic clk,
+  input  logic rst,
+  input  logic RegA_LATCH_EN,            //?? from CU
+  input  logic RegB_LATCH_EN,            //?? from CU
+  input  logic RegIMM_LATCH_EN,          //?? from CU
+  input  logic RF_WE,                    // from CU
+  input  logic [nbits-1:0] DATAIN,       // from WB  (NON PIPELINE??)
+  input  logic [nbits-1:0] IR_IN,        // from fetcher to Reg_gen
+  input  logic [nbits-1:0] NPC4_IN,
+  input  logic [nbits-1:0] PC_IN,
+  output logic [nbits-1:0] NPC4_OUT,
+  output logic [nbits-1:0] PC_OUT
+  output logic [nbits-1:0] RD1,         //??why always enabled
+  output logic [nbits-1:0] RD2,         //??
+  output logic [nbits-1:0] Imm_out,      //??
+);
+
+endmodule
+
+
+module decodeUnit #(parameter nbits = 32, bits = 32) (
   input logic clk,
   input logic rst,
-  input logic RegA_LATCH_EN, // from CU
-  input logic RegB_LATCH_EN, // from CU
-  input logic RegIMM_LATCH_EN, // from CU
-  input logic RF_WE, // from CU
-  input logic [nbits-1:0] DATAIN, // from WB
-  output logic [nbits-1:0] RD1,
-  output logic [nbits-1:0] RD2,
-  output logic [nbits-1:0] Imm_out,
-  input logic [nbits-1:0] IR_IN,
+  input logic RegA_LATCH_EN,            //?? from CU
+  input logic RegB_LATCH_EN,            //?? from CU
+  input logic RegIMM_LATCH_EN,          //?? from CU
+  input logic RF_WE,                    // from CU
+  input logic [nbits-1:0] DATAIN,       // from WB
+  output logic [nbits-1:0] RD1,         //?? 
+  output logic [nbits-1:0] RD2,         //??
+  output logic [nbits-1:0] Imm_out,      //??
+  input logic [nbits-1:0] IR_IN,        // from fetcher to Reg_gen
   input logic [nbits-1:0] NPC4_IN,
   output logic [nbits-1:0] NPC4_OUT,
-  input logic [nbits-1:0] NPC_IN,
-  output logic [nbits-1:0] NPC_OUT
+  input logic [nbits-1:0] PC_IN,
+  output logic [nbits-1:0] PC_OUT
 );
 
   logic [nbits-1:0] RF_out1, RF_out2, signExtOut;
@@ -21,11 +42,11 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
 
   // Register components declaration
   register_generic #(nbits) NPC2 (
-    .data_in(NPC_IN),
+    .data_in(PC_IN),
     .CK(clk),
     .RESET(rst),
     .ENABLE(1'b1), //Always enabled
-    .data_out(NPC_OUT)
+    .data_out(PC_OUT)
   );
 
   register_generic #(nbits) NPC4 (
@@ -82,5 +103,7 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
     .ENABLE(RegB_LATCH_EN),
     .data_out(RD2)
   );
+
+  assign rstfls = rst | flush | hazflush;
 
 endmodule
