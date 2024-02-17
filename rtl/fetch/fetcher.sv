@@ -42,11 +42,11 @@ module fetcher #(parameter bits = 32) (
     end
 
 
-    always_ff @( posedge clk or negedge rst ) begin : addrout
-        if(!rst) addr_out <= 32'h00000000;
+    always_comb begin : addrout
+        if(!rst) addr_out = 32'h00000000;
         else begin
             if(proc_req) begin
-                addr_out <= addr_in;    //Address sent together with the request
+                addr_out = addr_in;    //Address sent together with the request
             end
         end
     end

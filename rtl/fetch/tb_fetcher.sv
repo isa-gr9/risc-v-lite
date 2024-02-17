@@ -25,10 +25,10 @@ module tb_fetcher;
         .mem_rdy(mem_rdy),
         .valid(valid),
         .pc_en(pc_en),
-        .ADDR_IN(ADDR_IN),
-        .RDATA(RDATA),
-        .ADDR_OUT(ADDR_OUT),
-        .INSTR_OUT(INSTR_OUT),
+        .addr_in(ADDR_IN),
+        .rdata(RDATA),
+        .addr_out(ADDR_OUT),
+        .ir(INSTR_OUT),
         .stall(stall),
         .proc_req(proc_req)
     );
@@ -61,10 +61,13 @@ module tb_fetcher;
             RDATA = 32'hfafafafa;
             #2;
             mem_rdy = 1'b0;
-            #8
+            #8;
             pc_en = 1'b0;
             valid = 1'b0;
-            #20
+            #10;
+            pc_en = 1'b1;
+            ADDR_IN = 32'h00000a1;
+            #30
             $finish;
 
     end

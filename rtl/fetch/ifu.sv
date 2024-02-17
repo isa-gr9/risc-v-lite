@@ -14,7 +14,7 @@
 *                It contains also a fetcher that as the duty of separating
 *                the instruction memory from the pipeline. It is able to stall
 *                the pipeline if the memory it's slow. If the memory doesn't
-*                respond in time, a nop is sent as instruction register 
+*                respond in time, a nop is sent as instruction register
 *                to the pipeline.
 *
 ******************************************************************************/
