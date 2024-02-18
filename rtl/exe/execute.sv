@@ -43,8 +43,8 @@ module execute #(parameter N = 32) (
     always_comb                                   //NOTA: NON HO AGGIUNTO IL REGISTRO DI PIPELINE CON jPC PROPAGATO PERCHE' iL JPC PUO ESSERE PRESO DA ALU_RES SE GLI OPERANDI SONO SETTATI CORRETTAMENTE
         begin
             jPC = NPCin + {Imm, 1'b0};
-            PC_sel_i <= jmp_en || BRANCH_OUTCOME;
-        end 
+            PC_sel_i = jmp_en || BRANCH_OUTCOME;
+        end
 
     always_comb begin
         case (branch)
@@ -85,7 +85,7 @@ module execute #(parameter N = 32) (
         if (muxSelA == 1'b0)
             muxOutA = NPCin;
         else
-            muxOutA = r1;        //are we sure? 
+            muxOutA = r1;        //are we sure?
     end
 
     always_comb begin
