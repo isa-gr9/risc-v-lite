@@ -2,90 +2,127 @@
 module decodeUnit #(parameter nbits = 32, bits = 32) (
   input logic clk,
   input logic rst,
-  input logic RegA_LATCH_EN,            //?? from CU
-  input logic RegB_LATCH_EN,            //?? from CU
-  input logic RegIMM_LATCH_EN,          //?? from CU
-  input logic RF_WE,                    // from CU
-  input logic [nbits-1:0] DATAIN,       // from WB
+  input logic [14:0] cw,
+  input logic [3:0] aluop,
+  input logic cw_wb,
+  input logic [nbits-1:0] ir_in,
+  input logic [nbits-1:0] npc_in,
+  input logic [nbits-1:0] pc_in,
+  input logic [nbits-1:0] datain,
   input logic flush,
   input logic hazflush,
-  output logic [nbits-1:0] RD1,         //?? 
-  output logic [nbits-1:0] RD2,         //??
-  output logic [nbits-1:0] Imm_out,      //??
-  input logic [nbits-1:0] IR_IN,        // from fetcher to Reg_gen
-  input logic [nbits-1:0] NPC4_IN,
-  output logic [nbits-1:0] NPC4_OUT,
-  input logic [nbits-1:0] PC_IN,
-  output logic [nbits-1:0] PC_OUT
+  output logic [nbits-1:0] r1,
+  output logic [nbits-1:0] r2,
+  output logic [nbits-1:0] imm_out,
+  output logic [nbits-1:0] npc_out,
+  output logic [nbits-1:0] pc_out,
+  output logic [12:0] cw_exe,
+  output logic [3:0] aluop_exe
 );
 
+  logic rstfls;
   logic [nbits-1:0] RF_out1, RF_out2, signExtOut;
-  logic [4:0] RS1, RS2, WR_ADDR;
 
-  // Register components declaration
-  register_generic #(nbits) NPC2 (
-    .data_in(PC_IN),
-    .CK(clk),
-    .RESET(rst),
-    .ENABLE(1'b1), //Always enabled
-    .data_out(PC_OUT)
-  );
+  // flush logic
+  assign rst_logic = rst | flush | !hazflush;
+  assign rst_cw = rst | flush;
 
-  register_generic #(nbits) NPC4 (
-    .data_in(NPC4_IN),
-    .CK(clk),
-    .RESET(rst),
-    .ENABLE(1'b1), //Always enabled
-    .data_out(NPC4_OUT)
-  );
+  //control word signals dispatch
+  assign rd1_en = cw[14];
+  assign rd2_en = cw[13];
+  assign wr_en = cw_wb;
 
-  register_generic #(nbits) Imm (
-    .data_in(signExtOut),
-    .CK(clk),
-    .RESET(rst),
-    .ENABLE(RegIMM_LATCH_EN),
-    .data_out(Imm_out)
-  );
 
- register_generator #(nbits) RG (
-  .IR_IN(IR_IN),
-  .RS1(RS1),
-  .RS2(RS2),
-  .RD(WR_ADDR),
+//register generator (decoder)
+ register_generator #(nbits) generator_inst (
+  .IR_IN(ir_in),
+  .RS1(add_r1),
+  .RS2(add_r2),
+  .RD(add_wr),
   .IMM(signExtOut)
  );
 
-  REGISTER_FILE #(nbits) RF (
+
+//register file
+  REGISTER_FILE #(nbits) rf_inst (
     .CLK(clk),
     .RESET(rst),
-    .ENABLE(1'b1), //Always enabled
-    .RD1(1'b1), //Always enabled
-    .RD2(1'b1), //Always enabled
-    .WR(RF_WE),
-    .ADD_RD1(RS1),
-    .ADD_RD2(RS2),
-    .ADD_WR(WR_ADDR),
-    .DATAIN(DATAIN),
+    .RD1(rd1_en),
+    .RD2(rd2_en),
+    .WR(wr_en),
+    .ADD_RD1(add_r1),
+    .ADD_RD2(add_r2),
+    .ADD_WR(add_wr),
+    .DATAIN(data_in),
     .OUT1(RF_out1),
     .OUT2(RF_out2)
   );
 
-   register_generic #(nbits) IR2 (
+/*********************************************
+* Pipeline registers
+*********************************************/
+
+// CONTROL WORD PIPELINE REGISTER
+  register_generic #(13) cw_reg_inst (
+    .data_in(cw[12:0]),
+    .CK(clk),
+    .RESET(rst_cw),
+    .ENABLE(pipe_en), //Always enabled
+    .data_out(cw_exe)
+  );
+
+
+register_generic #(4) aluop_reg_inst (
+    .data_in(aluop),
+    .CK(clk),
+    .RESET(rst_cw),
+    .ENABLE(pipe_en), //Always enabled
+    .data_out(aluop_exe)
+  );
+
+
+  register_generic #(nbits) pc_pipe_inst (
+    .data_in(pc_in),
+    .CK(clk),
+    .RESET(rst_logic),
+    .ENABLE(pipe_en), //Always enabled
+    .data_out(pc_out)
+  );
+
+  register_generic #(nbits) npc_pipe_inst (
+    .data_in(npc_in),
+    .CK(clk),
+    .RESET(rst_logic),
+    .ENABLE(pipe_en), //Always enabled
+    .data_out(npc_out)
+  );
+
+  register_generic #(nbits) imm_pipe_inst (
+    .data_in(signExtOut),
+    .CK(clk),
+    .RESET(rst_logic),
+    .ENABLE(pipe_en),
+    .data_out(Imm_out)
+  );
+
+
+   register_generic #(nbits) reg1_pipe_inst (
     .data_in(RF_out1),
     .CK(clk),
-    .RESET(rst),
-    .ENABLE(RegA_LATCH_EN),
-    .data_out(RD1)
+    .RESET(rst_logic),
+    .ENABLE(pipe_en),
+    .data_out(r1)
   );
 
-   register_generic #(nbits) IR3 (
+   register_generic #(nbits) reg1_pipe_inst (
     .data_in(RF_out2),
     .CK(clk),
-    .RESET(rst),
-    .ENABLE(RegB_LATCH_EN),
-    .data_out(RD2)
+    .RESET(rst_logic),
+    .ENABLE(pipe_en),
+    .data_out(r2)
   );
 
-  assign rstfls = rst | flush | hazflush;
+
+
 
 endmodule
