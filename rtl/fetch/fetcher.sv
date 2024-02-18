@@ -32,11 +32,10 @@ module fetcher #(parameter bits = 32) (
     always_ff @( posedge clk or negedge rst ) begin : pcenable
         if(!rst) stall <= 1'b0;
         else begin
-            if( (prev_proc_req && !prev_mem_ready && !mem_rdy) || //Request sent, mem not ready
-                (prev_proc_req && prev_mem_ready && !valid)    || //Request accepted, data not valid
-                (!prev_proc_req && !valid)                     || //Request accepted more clock cycle before, signal not valid yet
-                (prev_proc_req && mem_rdy && !valid))             //Request sent, mem ready now, signal not valid
-                stall <= 1'b1;
+            if(prev_proc_req && !prev_mem_ready && !mem_rdy) stall <= 1'b1; //Request sent, mem not ready
+            else if(prev_proc_req && prev_mem_ready && !valid) stall <= 1'b1; //Request accepted, data not valid
+            else if(!prev_proc_req && !valid)  stall <= 1'b1; //Request accepted more clock cycle before, signal not valid yet
+            else if(prev_proc_req && mem_rdy && !valid) stall <= 1'b1; //Request sent, mem ready now, signal not valid
             else stall <= 1'b0;
         end
     end
@@ -70,8 +69,8 @@ module fetcher #(parameter bits = 32) (
     end
 
 
-    always_ff @(posedge clk or posedge rst) begin :prevRequest
-         if (!rst) begin
+    always_ff @(posedge clk or negedge rst) begin :prevRequest
+         if (rst) begin
              prev_mem_ready <= 1'b0;  // Initialize to some default value
          end else begin
              prev_mem_ready <= mem_rdy;
@@ -79,8 +78,8 @@ module fetcher #(parameter bits = 32) (
      end
 
 
-    always_ff @(posedge clk or posedge rst) begin : prevMem
-         if (!rst) begin
+    always_ff @(posedge clk or negedge rst) begin : prevMem
+         if (rst) begin
              prev_proc_req <= 1'b0;  // Initialize to some default value
          end else begin
              prev_proc_req <= proc_req;

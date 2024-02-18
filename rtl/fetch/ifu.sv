@@ -40,10 +40,12 @@ module ifu #(parameter bits=32) (
 
 localparam [31:0] nop = 32'h00000013; // nop instruction
 logic [bits-1:0] npc_loc, pc_loc_i, pc_loc_o, ir_loc_i, ir_loc_o;
-
+logic rst_logic;
 
 /* Hazard detection and instruction memory not ready */
 assign pc_en_loc = hazard & pc_en;
+
+assign rst_logic = rst | flush;
 
 
 MUX21_GENERIC #(bits) pc_src(
@@ -75,7 +77,7 @@ fetcher #(bits) fetcher(
     .addr_in(pc_loc_o),
     .rdata(rdata),
     .addr_out(pc2mem),
-    .instr_out(ir_loc_i),
+    .ir(ir_loc_i),
     .stall(stall),
     .proc_req(proc_req)
 );
@@ -91,26 +93,26 @@ MUX21_GENERIC #(bits) ir_src(
 * Pipeline registers
 ********************************************/
 
-register_generic #(bits) npc(
+register_generic #(bits) npc_pipereg(
     .data_in(npc_loc),
     .CK(clk),
-    .RESET(rst),
+    .RESET(rst_logic),
     .ENABLE(pipe_en),
     .data_out(npc)
 );
 
-register_generic #(bits) pc(
+register_generic #(bits) pc_pipereg(
     .data_in(pc_loc_o),
     .CK(clk),
-    .RESET(rst),
+    .RESET(rst_logic),
     .ENABLE(pipe_en),
     .data_out(pc)
 );
 
-register_generic #(bits) nIR(
+register_generic #(bits) nIR_pipereg(
     .data_in(ir_loc_i),
     .CK(clk),
-    .RESET(rst),
+    .RESET(rst_logic),
     .ENABLE(pipe_en),
     .data_out(ir)
 );

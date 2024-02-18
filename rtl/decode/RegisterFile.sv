@@ -1,52 +1,49 @@
 module REGISTER_FILE #(parameter NBITS = 32, NREGISTERS = 32) (
-  input logic CLK,
-  input logic RESET,
-  input logic ENABLE,
-  input logic RD1,
-  input logic RD2,
-  input logic WR,
-  input logic [4:0] ADD_WR,
-  input logic [4:0] ADD_RD1,
-  input logic [4:0] ADD_RD2,
-  input logic [NBITS-1:0] DATAIN,
-  output logic [NBITS-1:0] OUT1,
-  output logic [NBITS-1:0] OUT2
+  input logic clk,
+  input logic rst,
+  input logic rd1_en,
+  input logic rd2_en,
+  input logic wr_en,
+  input logic [4:0] add_wr,
+  input logic [4:0] add_rd1,
+  input logic [4:0] add_rd2,
+  input logic [NBITS-1:0] datain,
+  output logic [NBITS-1:0] out1,
+  output logic [NBITS-1:0] out2
 );
 
   // Define the register array
-  logic [NBITS-1:0] REGISTERS [0:NREGISTERS-1];
-  logic [NBITS-1:0] tmp_out1;
-  logic [NBITS-1:0] tmp_out2;
+  logic [NBITS-1:0] registers [0:NREGISTERS-1];
 
-  always @(posedge CLK or posedge RESET) begin
-    if (RESET) begin
+
+
+
+  always_comb begin
+    if (rst) begin
       for (int i = 0; i < NREGISTERS; i++) begin
-        REGISTERS[i] <= 0;
+        registers[i] <= 0;
       end
-      tmp_out1 = 0;
-      tmp_out2 = 0;
+      out1 = 0;
+      out2 = 0;
     end else begin
-      if (ENABLE) begin
-        if (RD1) begin
-          tmp_out1 = REGISTERS[ADD_RD1];
+    if (clk || !clk) begin 
+        if (rd1_en) begin
+          out1 = registers[add_rd1];
         end else begin
-          tmp_out1 = 0;
+          out1 = 0;
         end
 
-        if (RD2) begin
-          tmp_out2 = REGISTERS[ADD_RD2];
+        if (rd2_en) begin
+          out2 = registers[add_rd2];
         end else begin
-          tmp_out2 = 0;
+          out2 = 0;
         end
 
-        if (WR) begin
-          REGISTERS[ADD_WR] = DATAIN;
+        if (wr_en) begin
+          registers[add_wr] = datain;
         end
       end
     end
   end
-
-  assign OUT1 = tmp_out1;
-  assign OUT2 = tmp_out2;
 
 endmodule

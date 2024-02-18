@@ -16,7 +16,7 @@ module tb_fetcher;
     logic proc_req, we, pc_en, stall;
     logic [bits-1:0] ADDR_OUT, INSTR_OUT;
 
- 
+
 
     // Instantiate the module
     fetcher #(bits) dut (
@@ -32,9 +32,6 @@ module tb_fetcher;
         .stall(stall),
         .proc_req(proc_req)
     );
-    
-
-    
 
     // Clock generation
     always #(5) clk = ~clk; // Clock period is 5 time units

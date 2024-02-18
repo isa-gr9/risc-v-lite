@@ -1,48 +1,50 @@
 module cu (
     input  logic [31:0] instr,
-    output logic [1:0]  mem2reg,
-    output logic [3:0]  aluOp,
-    output logic [2:0]  branchContr,
-    output logic        regWrite,
-    output logic        aluSrc1,
-    output logic        aluSrc2,
-    output logic        memWrite,
-    output logic        memRead,
-    output logic        jump,
-    output logic        loadReq,
-    output logic        storeReq
+    output logic [15:0]  cw,
+    output logic [3:0]  aluOp
 );
-
+    logic [1:0]  mem2reg;
+    logic [2:0]  branchContr;
+    logic        regWrite;
+    logic        aluSrc1;
+    logic        aluSrc2;
+    logic        memWrite;
+    logic        memRead;
+    logic        jump;
+    logic        loadReq;
+    logic        storeReq;
     logic [6:0]  opcode;
     logic [2:0]  func3;
     logic [6:0]  func7bit5;
-    logic [17:0] cw;
+    logic [15:0] cw_tmp;
     logic [1:0]  aluopTmp;
     logic        branch;
-
+    logic        rd1_en, rd2_en;
 
     assign opcode     = instr[6:0];
     assign func3      = instr[14:12];
     assign func7bit5  = instr[30];
 
+    assign {rd1_en, rd2_en, regWrite, aluSrc1, aluSrc2, memWrite, memRead,
+            mem2reg, branch, jump, aluopTmp, loadReq, storeReq} = cw_tmp;
+    assign cw = {rd1_en, rd2_en, aluSrc1, aluSrc2, branchContr, regWrite,
+       jump, memWrite, memRead, loadReq, storeReq, mem2reg};
 
-    assign {regWrite, aluSrc1, aluSrc2, memWrite, memRead,
-            mem2reg, branch, jump, aluopTmp, loadReq, storeReq} = cw;
+    /* stall: addi */
 
-    /* stall: 0000000000000000010011*/
     always_comb begin : controlWord
         begin
             casez (opcode)
-                7'b0000011: cw = 13'b1_1_1_0_1_01_0_0_00_1_0;  //LW
-                7'b0100011: cw = 13'b0_1_1_1_0_xx_0_0_00_0_1;  //SW
-                7'b0110011: cw = 13'b1_0_1_0_0_00_0_0_10_0_0;  //RTYPE
-                7'b0010011: cw = 13'b1_1_1_0_0_00_0_0_00_0_0;  //ADDI
-                7'b0010111: cw = 13'b1_1_0_0_0_00_0_0_00_0_0;  //AUIPC
-                7'b0110111: cw = 13'b1_1_x_0_0_00_0_0_00_0_0;  //LUI
-                7'b1100011: cw = 13'b0_0_0_0_0_00_1_0_00_0_0;  //BRANCH
-                7'b1101111: cw = 13'b1_1_0_0_0_10_0_1_00_0_0;  //JTYPE
-                7'b1100111: cw = 13'b1_1_1_0_0_10_0_1_00_0_0;  //RET- jalr
-                default:    cw = 13'bxxxxxxxxxxxxx;           //unknown
+                7'b0000011: cw_tmp = 15'b1_0_1_1_1_0_1_01_0_0_00_1_0;  //LW
+                7'b0100011: cw_tmp = 15'b1_1_0_1_1_1_0_xx_0_0_00_0_1;  //SW
+                7'b0110011: cw_tmp = 15'b1_1_1_0_1_0_0_00_0_0_10_0_0;  //RTYPE
+                7'b0010011: cw_tmp = 15'b1_0_1_1_1_0_0_00_0_0_00_0_0;  //ADDI
+                7'b0010111: cw_tmp = 15'b0_0_1_1_0_0_0_00_0_0_00_0_0;  //AUIPC
+                7'b0110111: cw_tmp = 15'b0_0_1_1_x_0_0_00_0_0_00_0_0;  //LUI
+                7'b1100011: cw_tmp = 15'b1_1_0_0_0_0_0_00_1_0_00_0_0;  //BRANCH
+                7'b1101111: cw_tmp = 15'b1_0_1_1_0_0_0_10_0_1_00_0_0;  //JTYPE
+                7'b1100111: cw_tmp = 15'b1_0_1_1_1_0_0_10_0_1_00_0_0;  //RET- jalr
+                default:    cw_tmp = 15'bxxxxxxxxxxxxxxx;           //unknown
             endcase
         end
     end
@@ -78,4 +80,6 @@ module cu (
         end
         else branchContr = 3'b000; //nobranch
     end
+
+
 endmodule

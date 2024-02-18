@@ -6,9 +6,10 @@ module FD (
     output logic Q
 );
 
-    always_ff @(posedge CK or posedge RESET)
+
+    always_ff @(posedge CK or negedge RESET or negedge ENABLE)
     begin
-        if (RESET) Q <= 1'b0;
+        if (!RESET) Q <= 1'b0;
         else begin
             if (ENABLE) Q <= D;
         end

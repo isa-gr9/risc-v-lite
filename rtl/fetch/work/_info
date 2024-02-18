@@ -1,0 +1,163 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/riccardo/git/isa/risc-v-lite/rtl/fetch
+vadder
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1708193011
+!i10b 1
+!s100 ICoQ[zQElD`ZWmBdIJ2A90
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IS@]VHNjVbJAPf`EZbO]PH1
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+Z5 w1707813992
+8adder.sv
+Fadder.sv
+!i122 14
+L0 1 11
+Z6 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z7 !s108 1708193011.000000
+!s107 adder.sv|
+!s90 -reportprogress|300|-work|work|adder.sv|
+!i113 1
+Z8 o-work work
+Z9 tCvgOpt 0
+vFD
+R1
+R2
+!i10b 1
+!s100 VdjO?SXQ;MMdH6P[QcNNj3
+R3
+I5VAYi`4fcT0DK]:dgWH6B2
+R4
+S1
+R0
+w1708185179
+8../basic_elements/ffd.sv
+F../basic_elements/ffd.sv
+!i122 11
+L0 1 17
+R6
+r1
+!s85 0
+31
+R7
+!s107 ../basic_elements/ffd.sv|
+!s90 -reportprogress|300|-work|work|../basic_elements/ffd.sv|
+!i113 1
+R8
+R9
+n@f@d
+vfetcher
+R1
+R2
+!i10b 1
+!s100 Nl6]n`[9:C`3hz804WDQR2
+R3
+ICRhloLaMHY80WCY@]f_Zl0
+R4
+S1
+R0
+w1708188321
+8fetcher.sv
+Ffetcher.sv
+!i122 15
+L0 16 74
+R6
+r1
+!s85 0
+31
+R7
+!s107 fetcher.sv|
+!s90 -reportprogress|300|-work|work|fetcher.sv|
+!i113 1
+R8
+R9
+vifu
+R1
+R2
+!i10b 1
+!s100 [PXf8FR7fF9W>`A`HXdgS3
+R3
+IDfl6TDGb@]>3N1nNFHbi=0
+R4
+S1
+R0
+w1708193008
+8ifu.sv
+Fifu.sv
+!i122 16
+L0 22 97
+R6
+r1
+!s85 0
+31
+R7
+!s107 ifu.sv|
+!s90 -reportprogress|300|-work|work|ifu.sv|
+!i113 1
+R8
+R9
+vMUX21_GENERIC
+R1
+R2
+!i10b 1
+!s100 LT95kK<aUC5ViMEh3M0mh0
+R3
+I:IBk?GYkNBJUmSX;MV<JW0
+R4
+S1
+R0
+R5
+8../basic_elements/mux21generic.sv
+F../basic_elements/mux21generic.sv
+!i122 13
+L0 1 15
+R6
+r1
+!s85 0
+31
+R7
+!s107 ../basic_elements/mux21generic.sv|
+!s90 -reportprogress|300|-work|work|../basic_elements/mux21generic.sv|
+!i113 1
+R8
+R9
+n@m@u@x21_@g@e@n@e@r@i@c
+vregister_generic
+R1
+R2
+!i10b 1
+!s100 jPJXDZz1lhWgL7]7BEfQ?0
+R3
+IcQeiR?_OT72AZI7:m:=:f0
+R4
+S1
+R0
+R5
+8../basic_elements/register_generic.sv
+F../basic_elements/register_generic.sv
+!i122 12
+L0 1 18
+R6
+r1
+!s85 0
+31
+R7
+!s107 ../basic_elements/register_generic.sv|
+!s90 -reportprogress|300|-work|work|../basic_elements/register_generic.sv|
+!i113 1
+R8
+R9
