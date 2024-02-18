@@ -18,7 +18,7 @@ module cu (
     logic [6:0]  opcode;
     logic [2:0]  func3;
     logic [6:0]  func7bit5;
-    logic [15:0] cw_tmp;
+    logic [14:0] cw_tmp;
     logic [1:0]  aluopTmp;
     logic        branch;
     logic        rd1_en, rd2_en;
@@ -33,7 +33,9 @@ module cu (
     assign cw = {rd1_en, rd2_en, aluSrc1, aluSrc2, branchContr, jump,
                  memWrite, memRead, loadReq, storeReq, mem2reg, regWrite};
 
-    /* stall: addi */
+
+    /* stall: 101100000000001 
+       alu op :  0001 */
 
     always_comb begin : controlWord
         begin
@@ -89,4 +91,6 @@ module cu (
         if (stall) pc_en = 1'b0;
         else pc_en = 1'b1;
     end
+
+
 endmodule

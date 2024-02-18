@@ -158,7 +158,7 @@ module execute #(parameter N = 32) (
         .data_out(ImmOUT)
     );
 
-    register_generic #(8) cw_REG_EXMEM (
+    register_generic #(7) cw_REG_EXMEM (
         .data_in(cwMEM_i),
         .CK(clk),
         .RESET(rst),
@@ -174,7 +174,7 @@ module execute #(parameter N = 32) (
         .data_out(PC_sel)
     );
 
-    register_generic #(N) RDEST_REG_EXMEM (
+    register_generic #(5) RDEST_REG_EXMEM (
         .data_in(Rdest_in),
         .CK(clk),
         .RESET(rst),
