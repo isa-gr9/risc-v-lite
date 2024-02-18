@@ -1,27 +1,30 @@
 module wb #(parameter N = 32) (
-
-    input logic [1:0]    mem2reg,    // from CU
-    input logic          regWrite,   // from CU
-    input logic [N-1:0]  ALUres,     // from memstage
-    input logic [N-1:0]  MEMread,    // Data read from memory
-    input logic [N-1:0]  NPCin,      // from MEM/WB reg
-    output logic [N-1:0] regDest     // register destination
+    input  logic [1:0]    mem2reg,      // from CU
+    input  logic          regWrite,     // from CU
+    input  logic [N-1:0]  ALUres,       // from memstage
+    input  logic [N-1:0]  MEMread,      // Data read from memory
+    input  logic [N-1:0]  NPCin,        // from MEM/WB reg
+    input  logic [5:0]    regDest_in,   // from MEM/WB Register destination
+    output logic [N-1:0]  data_out,
+    output logic [5:0]    regDest_out,  // to RF register destination
+    output logic          wr_en
 );
 
+    assign wr_en = regWrite;
+    assign regDest_out = regDest_in;
 
     always_comb begin
-        if (regWrite) begin
-            casex (mem2reg)
-                2'b00:
-                    muxOut = ALUres;
-                2'b01:
-                    muxOut = MEMread ;
-                2'b10:
-                    muxOut = NPCin;
-                default: 
-                    muxOut = 2'bxx;
-            endcase
-        end
+        casex (mem2reg)
+            2'b00:
+                data_out = ALUres;
+            2'b01:
+                data_out = MEMread ;
+            2'b10:
+                data_out = NPCin;
+            default: 
+                data_out = 2'bxx;
+        endcase
     end
+
 
 endmodule

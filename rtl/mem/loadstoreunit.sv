@@ -1,88 +1,86 @@
-module lsu #(parameter bits = 32) (
-	);
+module loadStore #(parameter addressSize = 32, dataSize = 32) (
+    input logic clk,
+    input logic rst,
+    input logic[4:0] wrAddr,                       //for load operations, destination register index to write on the register file
+    input logic req,                               //from the CU, = 1 if this is a memory operation
+    input logic [addressSize-1 : 0] ADDR_IN,       //from the EX/MEM regisrter, output of the ALU, it's the memory address for the operation(loadstore)
+    input logic we_in,                             //from the CU, 1 in case of write operations (store), 0 in case of read operations (load)
+    input logic [dataSize-1 : 0] WRITE_DATA,       //data to be written to memory. Sent together with proc req
+    input logic mem_rdy,                           //flag from memory, it indicates it has received the address and it is elaborating the request
+    input logic valid,                             //flag from memory, it indicates that the operation has terminated
+    input logic [dataSize-1:0] rdata,              //data read from memory, valid only if valid is high during its scan
+    output logic proc_req, we,                     //flag needed by the req/rdy protocol
+    output logic [addressSize-1:0] addr,           //address sent to memory needed to perform the write/read instructioin
+    output logic [dataSize-1:0] wdata,             //data to be written in the memory
+    output logic [dataSize-1:0] loadData,          //data coming from the memory, to be written back in the register file
+    output logic [4 : 0] loadDest,
+	output logic stall
+);
+    
+    logic prev_proc_req, prev_mem_ready, prev_valid;
+	logic memOpOn;
 
-logic i, j;
-logic [31:0] addr[0:4];
-logic [31:0] d_r2[0:4];
-logic w_notr [0:4];
-
-typedef enum logic [2:0] {
-    init = 3'b000,
-    firstreq = 3'b001,
-    lsreq = 3'b010,
-    req_send = 3'b011,
-    waitstate = 3'b100,
-    firstvalid =  3'b101,
-    validstate = 3'b110
-} state;
-
-
-state cur_state, next;
-
-always_ff @(posedge clk or posedge rst) begin
-    if (rst)
-        cur_state <= init;
-    else
-        cur_state <= next;
-end
-
-
-always_ff @(posedge clk or posedge rst) begin
-    case (cur_state) 
-        init: begin
-              i <= 1'b0;
-              j <= 1'b0;
-              if (lsinstr == 1)
-              	next <= firstreq;
+    always_ff @( posedge clk or negedge rst ) begin : pcenable
+        if(!rst) stall <= 1'b0;
+        else begin
+            if( (prev_proc_req && !prev_mem_ready && !mem_rdy) || //Request sent, mem not ready
+                (prev_proc_req && prev_mem_ready && !valid)    || //Request accepted, data not valid
+                (!prev_proc_req && !valid)                     || //Request accepted more clock cycle before, signal not valid yet
+                (prev_proc_req && mem_rdy && !valid))             //Request sent, mem ready now, signal not valid
+                stall <= 1'b1;
+            else stall <= 1'b0;
         end
-        firstreq: begin
-                addr[i] <= ADDR_IN;
-                d_r2[i] <= ls_mux;
-                w_notr <= ls_mux_sel;
-                i++;
-                if (lsinstr == 1)
-                    next <= lsreq;
-        end
-        lsreq: begin
-             proc_req <= 1'b1;
-             ADDR_OUT <= addr[j];
-             we <= w_notr[j];
-             data_reg <= d_r2[j];
-             j++;
-             if (mem_rdy == 1 & j != i)
-             	next <= waitstate;
-             else if (j == 1)
-             	next <= lsreq;
-         end
-        req_send: begin
-        	proc_req <= 1'b1;
-        	ADDR_OUT <= addr[j];
-        	we <= w_notr[j];
-        	j++;
-        	addr[i] <= ADDR_IN;
-        	d_r2[i] <= ls_mux;
-        	w_notr[i] <= ls_mux_sel;
-        	i++;
-        	if (j > i)
-        		next <= lsreq;
-        end
-		firstvalid: begin
-			write_out <= Rdata;
-			wen <= w_notr[j-1];
-			store_ok <= ~(w_notr[j-1]);
-			j = 0;
-			proc_req = 0;
-			if (valid == 1 & i != j)
-				next <= validstate;
-		end        
-		validstate: begin
-			write_out <= Rdata;
-			wen <= w_notr[j];
-			store_ok <= ~w_notr[j];
-			if (i == j)
-				next <= init;
-		end
+    end
+
+
+    always_comb begin // @( posedge clk or negedge rst ) begin : addrout
+            if(proc_req) begin
+                addr = ADDR_IN;    //Address sent together with the request
+				wdata = WRITE_DATA;
+				we = we_in;            
+			end
+    end
+
+	always_comb
+	begin
+		if(req == 1'b1)                               //when req goes high, begin of a memory operation
+			memOpOn = 1'b1;
 		
-    endcase 
-end   
+	    if((prev_valid != valid)&&(valid == 1'b0))    //falling edge of valid, end of a memory operation
+			memOpOn = 1'b0;
+	end
+
+
+    always_ff @( posedge clk or negedge rst ) begin : procreq
+        if(!rst) proc_req <= 1'b0;        
+        else begin
+            if(req) begin				
+                proc_req <= 1'b1;           
+            end
+            else if(prev_proc_req && prev_mem_ready) proc_req <= 1'b0;  //mem ready an proc high for one clock cycle
+        end
+    end
+
+
+    always_comb begin : response
+        if (valid && !we) begin
+            loadData = rdata;
+			loadDest = wrAddr;
+        end
+    end
+
+
+    always_ff @(posedge clk or posedge rst) begin :prevRequest
+         if (!rst) begin
+            prev_mem_ready <= 1'b0;  // Initialize to some default value
+			prev_proc_req <= 1'b0;
+			prev_valid <= 1'b0;
+         end else begin
+            prev_mem_ready <= mem_rdy;
+			prev_proc_req <= proc_req;
+			prev_valid <= valid;
+         end
+     end
+
+
 endmodule

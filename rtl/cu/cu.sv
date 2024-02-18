@@ -1,6 +1,8 @@
 module cu (
     input  logic [31:0] instr,
-    output logic [15:0]  cw,
+    input  logic        stall,
+    output logic        pc_en,
+    output logic [15:0] cw,
     output logic [3:0]  aluOp
 );
     logic [1:0]  mem2reg;
@@ -83,4 +85,8 @@ module cu (
     end
 
 
+    always_comb begin : stallFromFetcher
+        if (stall) pc_en = 1'b0;
+        else pc_en = 1'b1;
+    end
 endmodule
