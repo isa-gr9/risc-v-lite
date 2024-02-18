@@ -1,26 +1,24 @@
 module wb #(parameter N = 32) (
 
-    input logic [1:0] WBmuxSel,       // from CU!
-
-    input logic [N-1:0] ALUres,
-    input logic [N-1:0] MEMread,        //data read from memory
-    input logic [N-1:0] NPCin,
-    input logic [N-1:0] IMMin,
-
-    output logic [N-1:0] muxOut
+    input logic [1:0] mem2reg,       // from CU
+    input logic [N-1:0] ALUres,      // from memstage
+    input logic [N-1:0] MEMread,     // Data read from memory
+    input logic [N-1:0] NPCin,       // from MEM/WB reg
+    output logic [N-1:0] regDest     // register destination
 );
 
 
     always_comb begin
-        case (WBmuxSel) 
-            2'b00: 
-                assign muxOut = NPCin;
+        case (mem2reg) 
+            2'b00:
+                muxOut = NPCin;
             2'b01: 
-                assign muxOut = ALUres;
+                muxOut = ALUres;
             2'b10: 
-                assign muxOut = MEMread;
+                muxOut = MEMread;
             default: 
-                assign muxOut = IMMin; 
+                muxOut = IMMin; 
         endcase;
+    end
 
-endmodule;
+endmodule
