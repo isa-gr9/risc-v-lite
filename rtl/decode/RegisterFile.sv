@@ -26,7 +26,7 @@ module REGISTER_FILE #(parameter NBITS = 32, NREGISTERS = 32) (
       out1 = 0;
       out2 = 0;
     end else begin
-    if (clk || !clk) begin 
+    if (clk || !clk) begin
         if (rd1_en) begin
           out1 = registers[add_rd1];
         end else begin

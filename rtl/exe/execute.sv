@@ -122,6 +122,9 @@ module execute #(parameter N = 32) (
         .zero(ZEROout)
         );
 
+/************************************
+* Pipeline registers
+*************************************/
 
     register_generic #(N) ALUout_REG_EXMEM (
         .data_in(ALUout),
@@ -131,7 +134,7 @@ module execute #(parameter N = 32) (
         .data_out(ALUres)
     );
 
-    register_generic #(N) B_REG_EXMEM (
+    register_generic #(N) rd2_REG_EXMEM (
         .data_in(operand2),
         .CK(clk),
         .RESET(rst),
@@ -139,7 +142,7 @@ module execute #(parameter N = 32) (
         .data_out(Bout)
     );
 
-    register_generic #(N) NPC4_REG_EXMEM (
+    register_generic #(N) npc_REG_EXMEM (
         .data_in(NPC4_IN),
         .CK(clk),
         .RESET(rst),
@@ -147,7 +150,7 @@ module execute #(parameter N = 32) (
         .data_out(NPC4_OUT)
     );
 
-    register_generic #(N) IMM_REG_EXMEM (
+    register_generic #(N) imm_REG_EXMEM (
         .data_in(Imm),
         .CK(clk),
         .RESET(rst),
@@ -155,7 +158,7 @@ module execute #(parameter N = 32) (
         .data_out(ImmOUT)
     );
 
-    register_generic #(7) CW_REG_EXMEM (
+    register_generic #(8) cw_REG_EXMEM (
         .data_in(cwMEM_i),
         .CK(clk),
         .RESET(rst),

@@ -1,4 +1,4 @@
-module memory #(parameter N = 32) (
+module wb #(parameter N = 32) (
 
     input logic [1:0] WBmuxSel,       // from CU!
 
@@ -6,8 +6,8 @@ module memory #(parameter N = 32) (
     input logic [N-1:0] MEMread,        //data read from memory
     input logic [N-1:0] NPCin,
     input logic [N-1:0] IMMin,
-      
-    output logic [N-1:0] muxOut    
+
+    output logic [N-1:0] muxOut
 );
 
 

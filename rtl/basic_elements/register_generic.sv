@@ -17,7 +17,7 @@ module register_generic #(parameter integer nbits = 32) (
 
     logic [nbits -1 : 0] register;
 
-    always_ff @( posedge CK or negedge RESET ) begin
+    always_ff @( posedge CK or negedge RESET or negedge ENABLE) begin
         if (!RESET)
             register <= '0;
         else if (ENABLE)

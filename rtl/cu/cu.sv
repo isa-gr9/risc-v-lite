@@ -27,8 +27,9 @@ module cu (
 
     assign {rd1_en, rd2_en, regWrite, aluSrc1, aluSrc2, memWrite, memRead,
             mem2reg, branch, jump, aluopTmp, loadReq, storeReq} = cw_tmp;
+
     assign cw = {rd1_en, rd2_en, aluSrc1, aluSrc2, branchContr, regWrite,
-       jump, memWrite, memRead, loadReq, storeReq, mem2reg};
+                 jump, memWrite, memRead, loadReq, storeReq, mem2reg};
 
     /* stall: addi */
 
