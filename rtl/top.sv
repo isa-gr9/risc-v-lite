@@ -3,8 +3,8 @@ module top #(
 ) (
     logic input 
 );
-
-    datapath #(parameter nbits = 32) (
+    
+    datapath #(NBITS) datap_inst (
         .clk(),
         .rst(),
         .pc_en(),
@@ -17,4 +17,14 @@ module top #(
         .mem_addr(),		 // to data memory
         .stall() 			 // to CU
     );
+
+
+    cu cu_inst (
+        .instr(),
+        .stall(),
+        .pc_en(),
+        .cw(),
+        .aluOp()
+    );
+
 endmodule
