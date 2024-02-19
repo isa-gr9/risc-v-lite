@@ -4,7 +4,7 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
   input logic [14:0] cw,
   input logic [3:0] aluop,
   input logic [4:0] addrWrIn,
-  input logic cw_wb,
+  input logic wr_en,
   input logic [nbits-1:0] ir_in,
   input logic [nbits-1:0] npc_in,
   input logic [nbits-1:0] pc_in,
@@ -31,7 +31,6 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
   //control word signals dispatch
   assign rd1_en = cw[14];
   assign rd2_en = cw[13];
-  assign wr_en = cw_wb;
 
 
 //register generator (decoder)
@@ -42,7 +41,6 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
   .RD(add_wr),
   .IMM(signExtOut)
  );
-
 
 //register file
   REGISTER_FILE #(nbits) rf_inst (

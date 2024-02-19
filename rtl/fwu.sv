@@ -16,7 +16,7 @@ always_comb begin
         ForwardA <= 2b'01; //The first ALU op is forwarded drom data memory or an earlier ALU result
     else if (MEM/WB_dest == src2)
         ForwardB <= 2b'01;
-    else 
+    else
         ForwardA <= 2b'00;
         ForwardB <= 2b'00;
 end

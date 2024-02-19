@@ -1,6 +1,5 @@
 module wb #(parameter N = 32) (
-    input  logic [1:0]    mem2reg,      // from CU
-    input  logic          regWrite,     // from CU
+    input  logic [2:0]    cw_wb,
     input  logic [N-1:0]  ALUres,       // from memstage
     input  logic [N-1:0]  MEMread,      // Data read from memory
     input  logic [N-1:0]  NPCin,        // from MEM/WB reg
@@ -10,7 +9,8 @@ module wb #(parameter N = 32) (
     output logic          wr_en
 );
 
-    assign wr_en = regWrite;
+    assign wr_en = cw_wb[0];
+    assign mem2reg = cw_wb[2:1];
     assign regDest_out = regDest_in;
 
     always_comb begin
