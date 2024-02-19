@@ -3,7 +3,7 @@ module top #(
 ) (
     logic input 
 );
-    
+
     datapath #(NBITS) datap_inst (
         .clk(),
         .rst(),
