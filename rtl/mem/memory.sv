@@ -7,7 +7,7 @@ module memory #(parameter N = 32) (
     input logic valid,              //from memory
     input logic[N-1:0] rdata,       //from memory
     input logic[6:0] cwMEM,
-    input logic[N-1:0] wrData_in,       
+    input logic[N-1:0] wrData_in,
     input logic [N-1:0] ALUres,
     input logic [N-1:0] NPCin,        //PC+4
     input logic [N-1:0] IMMin,
@@ -29,7 +29,7 @@ module memory #(parameter N = 32) (
 
     logic[N-1:0] loadData;
     logic[4:0] loadDest;
-    
+
     assign memWrite = cwMEM[6];
     assign memRead = cwMEM[5];
     assign loadReq = cwMEM[4];
