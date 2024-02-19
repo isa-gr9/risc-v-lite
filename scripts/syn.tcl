@@ -33,7 +33,7 @@ suppress_message RTDC-126
 ######################################################################
 
 # Set the design to synthesize
-set active_design "iir"
+set active_design "risc"
 #set active_design "iir_advanced"
 
 
@@ -48,7 +48,7 @@ file mkdir $libDir
 define_design_lib $active_design -path $libDir
 
 
-analyze -format vhdl -library $active_design ../rtl/${active_design}.vhd > ${dirname}/${active_design}_analyze.txt
+analyze -format systemverilog -library $active_design {ffd.sv mux21generic.sv register_generic.sv cu.sv RegisterFile.sv reg_generator.sv decode.sv alu.sv execute.sv adder.sv fetcher.sv ifu.sv loadstoreunit.sv memory.sv wb.sv fwu.sv hdu.sv datapath.sv top.sv} > ${dirname}/${active_design}_analyze.txt
 
 #Preserve rtl names for make the power consumption estimation easier
 set power_preserve_rtl_hier_names true
@@ -69,7 +69,8 @@ source "./${active_design}.sdc"
 # COMPILE
 #####################################################################
 
-compile_ultra
+compile -exact_map
+#compile_ultra
 
 
 #####################################################################
@@ -107,7 +108,7 @@ change_names -hierarchy -rules verilog
 #Delay of the netlist
 write_sdf "${dirname}/${active_design}.sdf"
 #Netlist
-write -format verilog -hierarchy -output "${dirname}/${active_design}_postsyn_netlist.v"
+write -format systemverilog -hierarchy -output "${dirname}/${active_design}_postsyn_netlist.v"
 #design constraints
 write_sdc "${dirname}/${active_design}.sdc"
 
