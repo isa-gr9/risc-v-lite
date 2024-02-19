@@ -65,6 +65,15 @@ module memory #(parameter N = 32) (
     
     
     //pipeline registers
+
+    register_generic #(3) cw_MEMWB (
+        .data_in(cwMEM[2:0]),
+        .CK(clk),
+        .RESET(rst),
+        .ENABLE(pipe_en),
+        .data_out(cwWB)
+    );
+
     register_generic #(N) ALU_reg_MEMWB (
         .data_in(ALUres),
         .CK(clk),

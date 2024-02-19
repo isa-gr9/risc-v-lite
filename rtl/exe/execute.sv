@@ -1,14 +1,14 @@
 module execute #(parameter N = 32) (
     input logic clk,
     input logic rst, 
-    input logic[12:0] cwEX,            
+    input logic[12:0] cwEX,
     input logic[3:0] aluOp,
     input logic pipe_en,
-    input logic[4:0] Rdest_in,            
-    input logic [N-1:0] NPCin,  
+    input logic[4:0] Rdest_in,
+    input logic [N-1:0] NPCin,
     input logic [N-1:0] NPC4_IN,
-    output logic [N-1:0] NPC4_OUT, 
-    input logic [N-1:0] r1,        
+    output logic [N-1:0] NPC4_OUT,
+    input logic [N-1:0] r1,
     input logic [N-1:0] r2,
     input logic [N-1:0] Imm,
     input logic [1:0] forwardA,       //from forwarding unit
@@ -19,7 +19,7 @@ module execute #(parameter N = 32) (
     output logic [N-1:0] ALUres,
     output logic [N-1:0] wrData,     //data to write in memory for store operations
     output logic [N-1:0] ImmOUT,
-    output logic PC_sel,            
+    output logic PC_sel,
     output logic [6:0] cwMEM,
     output logic [4:0] Rdest
 );
@@ -39,42 +39,44 @@ module execute #(parameter N = 32) (
     assign branch = cwEX[10:8];
     assign jmp_en = cwEX[7];
 
+    //assign PC_sel_i = (BRANCH_OUTCOME & branch) | jmp_en
+
     //branch target address generation
     always_comb                                   //NOTA: NON HO AGGIUNTO IL REGISTRO DI PIPELINE CON jPC PROPAGATO PERCHE' iL JPC PUO ESSERE PRESO DA ALU_RES SE GLI OPERANDI SONO SETTATI CORRETTAMENTE
         begin
-            jPC = NPCin + {Imm, 1'b0};       
-            PC_sel_i <= jmp_en || BRANCH_OUTCOME;
+            jPC = NPCin + {Imm, 1'b0};
+            PC_sel_i = ((BRANCH_OUTCOME & branch) | jmp_en);
         end 
 
     always_comb begin
         case (branch)
             000:
-                BRANCH_OUTCOME = 0;      
+                BRANCH_OUTCOME = 0;
             001:  // CONDITION: A = B           //BEQ
                 if(r1 == r2)
                     BRANCH_OUTCOME = 1;
                 else
-                    BRANCH_OUTCOME = 0;   
+                    BRANCH_OUTCOME = 0;
             010:                                //BNEQ
                 if(r1 != r2)
                     BRANCH_OUTCOME = 1;
                 else
-                    BRANCH_OUTCOME = 0; 
+                    BRANCH_OUTCOME = 0;
             011:                                //BLEQ
                 if(r1 <= r2)
                     BRANCH_OUTCOME = 1;
                 else
-                    BRANCH_OUTCOME = 0; 
+                    BRANCH_OUTCOME = 0;
             100:                                //BLT
                 if(r1 < r2)
                     BRANCH_OUTCOME = 1;
                 else
-                    BRANCH_OUTCOME = 0; 
+                    BRANCH_OUTCOME = 0;
             101:                                //BGEQ
                 if(r1 >= r2)
                     BRANCH_OUTCOME = 1;
                 else
-                    BRANCH_OUTCOME = 0; 
+                    BRANCH_OUTCOME = 0;
             endcase 
     end
 

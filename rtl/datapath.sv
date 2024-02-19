@@ -1,3 +1,17 @@
+/*
+
+MAGAGNE:
+
+- FLUSH DELLA PIPELINE DA DOVE ARRIVA?
+
+*/
+
+
+
+
+
+
+
 module datapath #(parameter nbits = 32) (
 	input logic clk,
 	input logic rst,
@@ -5,33 +19,34 @@ module datapath #(parameter nbits = 32) (
 	input logic [14:0] cw,				// from control unit
 	input logic [3:0] aluOp,			// from contorl unit
 	input logic [nbits-1:0] mem_data,   // from data memory
-	input logic IFID_enable,            //from hazard detection unit
-    input logic muxControl              //from hazard detection unit
-  	output [nbits-1:0] instr,			// to instruction memory
+    input logic [nbits-1:0] i_data,     // from instruction memory
+	//input logic IFID_enable,            //from hazard detection unit
+    //input logic muxControl,              //from hazard detection unit
+  	output [nbits-1:0] pc2mem,			// to instruction memory
 	output [nbits-1:0] mem_addr,		// to data memory
+    output [nbits-1:0] ir2cu,
 	output stall 						// to CU
 );
 
 logic muxsel_jmp; // from write back stage
 logic pipe_en;		//?
 logic Imem_rdy, Ivalid, Iproc_req; // from/to instr mem
-logic pc_en;
+//logic pc_en;
 logic [nbits-1:0] jpc; 		// branch target PC
 logic [nbits-1:0] pcFetch, pcDecode; 	// to decode stage
 logic [nbits-1:0] npcFetch, npcDecode, npcExe, npcMem; 	// to decode stage
 logic [nbits-1:0] irFetch; 	// to decode stage
-logic [nbits-1:0] pc2mem; 	// to instruction memory
+//logic [nbits-1:0] pc2mem; 	// to instruction memory
 logic IFID_enable;		//	from Hazard Detection unit
 logic flush;		//	= Branch taken, from MEM stage
-logic cw_wb;
 logic datain;		// from data memory to register file
 logic hazard;		// from hazard MUX
 logic [nbits-1:0] r1,r2; 	// read from register file
 logic [nbits-1:0] rdestExe, rdestMem, rdestWb; 	// read from register file
 logic [nbits-1:0] immDecode, immExe, immMem; 	// immediate from decode stage
 logic [nbits-1:0] aluresExe, aluresMem; 	// immediate from decode stage
-logic [nbits-1:0] op2mem; 	
-logic pc_sel;
+logic [nbits-1:0] op2mem;
+logic pc_selExe;
 
 
 logic [1:0] fwdA, fwdB;
@@ -50,34 +65,34 @@ logic load;
 
 assign load = cw_mem[2];
 
-
+assign ir2cu = irFetch;
 
 assign nop_cw = 101100000000001;
 
 
-always_comb begin
-	if(hazard) begin
-		cw_tmp = cw;
-		aluop_tmp = aluOp;
-	end
-	else
-		cw_tmp = nop_cw;
-		aluop_tmp = 4'b0001;
+always_comb begin : hdu_cw_ctrl
+    if(hazard) begin
+    	cw_tmp = cw;
+    	aluop_tmp = aluOp;
+    end
+    else
+    	cw_tmp = nop_cw;
+    	aluop_tmp = 4'b0001;
 end
 
 
 ifu #(nbits) FETCH (
 	.clk(clk),
 	.rst(rst),
-    .brjmp_ctrl(pc_sel),       
-    .hazard(IFID_enable),             
-    .flush(flush),              
+    .brjmp_ctrl(pc_selExe),
+    .hazard(IFID_enable),
+    .flush(flush),
     .pipe_en(pipe_en),            
     .mem_rdy(Imem_rdy),            
     .valid(Ivalid),              
     .pc_en(pc_en),   // the last bit of the control word is the enable of the pc              
     .jpc(jpc),     
-    .rdata(instr),   
+    .rdata(i_data),   
     .proc_req(Iproc_req),           
     .stall(stall),              
     .pc(pcFetch),       
@@ -92,7 +107,7 @@ decodeUnit #(nbits,nbits) DECODE (
   .cw(cw_tmp),
   .aluop(aluOp),
   .addWrIn(rdestWb),
-  .cw_wb(cw_wb),
+  .wr_en(cw_wb),
   .ir_in(irFetch),
   .npc_in(npcFetch),
   .pc_in(pcFetch),
@@ -131,7 +146,7 @@ execute #(nbits) EXE (
     .ALUres(aluresExe),
     .Bout(op2mem),
     .ImmOUT(immExe),
-    .PC_sel(pc_sel),
+    .PC_sel(pc_selExe),
     .cwMEM(cw_mem),
     .Rdest(rdestExe)
 );
