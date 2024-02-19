@@ -14,50 +14,65 @@ module loadStore #(parameter addressSize = 32, dataSize = 32) (
     output logic [dataSize-1:0] wdata,             //data to be written in the memory
     output logic [dataSize-1:0] loadData,          //data coming from the memory, to be written back in the register file
     output logic [4 : 0] loadDest,
-    output logic stall
+	output logic stall
 );
-
+    
     logic prev_proc_req, prev_mem_ready, prev_valid;
-    logic memOpOn;
+	logic memOpOn;
 
-    always_ff @( posedge clk or negedge rst ) begin : pcenable
-        if(!rst) stall <= 1'b0;
-        else begin
-            if( (prev_proc_req && !prev_mem_ready && !mem_rdy) || //Request sent, mem not ready
-                (prev_proc_req && prev_mem_ready && !valid)    || //Request accepted, data not valid
-                (!prev_proc_req && !valid)                     || //Request accepted more clock cycle before, signal not valid yet
-                (prev_proc_req && mem_rdy && !valid))             //Request sent, mem ready now, signal not valid
-                stall <= 1'b1;
-            else stall <= 1'b0;
-        end
-    end
+    //always_ff @( posedge clk or negedge rst ) begin : pcenable
+     //always_comb begin
+     // if(!rst) stall = 1'b0;
+      //  else begin
+      //     if( (prev_proc_req && !prev_mem_ready && !mem_rdy) || //Request sent, mem not ready
+       //         (prev_proc_req && prev_mem_ready && !valid)    || //Request accepted, data not valid
+       //         (!proc_req && !valid && memOpOn))                      //Request accepted more clock cycle before, signal 
+               //(proc_req && mem_rdy && !valid))             //Request sent, mem ready now, signal not valid
+          //      stall = 1'b1;
+          //  else stall = 1'b0;
+      //  end
+    //end
+
+	always_comb begin
+		if(!rst) stall = 1'b0;
+		else begin
+			if(memOpOn) begin
+				if((!mem_rdy) || (!proc_req && !valid))
+					stall = 1'b1;
+			
+			end else
+				stall = 1'b0;
+		end
+	end
 
 
     always_comb begin // @( posedge clk or negedge rst ) begin : addrout
-        if(proc_req) begin
-            addr = ADDR_IN;    //Address sent together with the request
-            wdata = WRITE_DATA;
-            we = we_in;
-        end
+            if(proc_req) begin
+                addr = ADDR_IN;    //Address sent together with the request
+				wdata = WRITE_DATA;
+				we = we_in;            
+			end
     end
 
-    always_comb
-    begin
-        if(req == 1'b1)                               //when req goes high, begin of a memory operation
-            memOpOn = 1'b1;
+	always_comb
+	begin
+		if(req == 1'b1)                               //when req goes high, begin of a memory operation
+			memOpOn = 1'b1;
+		
+	    if((prev_valid != valid)&&(valid == 1'b1))    //falling edge of valid, end of a memory operation
+			memOpOn = 1'b0;
+	end
 
-        if((prev_valid != valid)&&(valid == 1'b0))    //falling edge of valid, end of a memory operation
-        memOpOn = 1'b0;
-    end
 
-
-    always_ff @( posedge clk or negedge rst ) begin : procreq
-        if(!rst) proc_req <= 1'b0;
+    //always_ff @( posedge clk or negedge rst ) begin : procreq
+	always_comb begin        
+		if(!rst) proc_req = 1'b0;        
         else begin
-            if(req) begin
-                proc_req <= 1'b1;
+            if(req) begin				
+                proc_req = 1'b1;           
             end
-            else if(prev_proc_req && prev_mem_ready) proc_req <= 1'b0;  //mem ready an proc high for one clock cycle
+            else if(prev_proc_req && prev_mem_ready) proc_req = 1'b0;  //mem ready an proc high for one clock cycle
+	    // else if(req && prev_mem_rdy) proc_req = 1'b0;
         end
     end
 
@@ -65,7 +80,7 @@ module loadStore #(parameter addressSize = 32, dataSize = 32) (
     always_comb begin : response
         if (valid && !we) begin
             loadData = rdata;
-            loadDest = wrAddr;
+			loadDest = wrAddr;
         end
     end
 
@@ -73,12 +88,12 @@ module loadStore #(parameter addressSize = 32, dataSize = 32) (
     always_ff @(posedge clk or posedge rst) begin :prevRequest
          if (!rst) begin
             prev_mem_ready <= 1'b0;  // Initialize to some default value
-            prev_proc_req <= 1'b0;
-            prev_valid <= 1'b0;
+			prev_proc_req <= 1'b0;
+			prev_valid <= 1'b0;
          end else begin
             prev_mem_ready <= mem_rdy;
-            prev_proc_req <= proc_req;
-            prev_valid <= valid;
+			prev_proc_req <= proc_req;
+			prev_valid <= valid;
          end
      end
 
