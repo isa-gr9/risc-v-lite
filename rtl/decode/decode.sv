@@ -72,8 +72,7 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
     .data_out(cw_exe)
   );
 
-
-register_generic #(4) aluop_reg_inst (
+  register_generic #(4) aluop_reg_inst (
     .data_in(aluop),
     .CK(clk),
     .RESET(rst_cw),
@@ -88,7 +87,6 @@ register_generic #(4) aluop_reg_inst (
     .ENABLE(pipe_en), //Always enabled
     .data_out(Rdestination)
   );
-
 
   register_generic #(nbits) pc_pipe_inst (
     .data_in(pc_in),
@@ -115,7 +113,7 @@ register_generic #(4) aluop_reg_inst (
   );
 
 
-   register_generic #(nbits) reg1_pipe_inst (
+  register_generic #(nbits) reg1_pipe_inst (
     .data_in(RF_out1),
     .CK(clk),
     .RESET(rst_logic),
@@ -123,7 +121,7 @@ register_generic #(4) aluop_reg_inst (
     .data_out(r1)
   );
 
-   register_generic #(nbits) reg2_pipe_inst (
+  register_generic #(nbits) reg2_pipe_inst (
     .data_in(RF_out2),
     .CK(clk),
     .RESET(rst_logic),
