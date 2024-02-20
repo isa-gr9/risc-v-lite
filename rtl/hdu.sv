@@ -18,4 +18,4 @@ module hdu(
         end
     end
 
-endmodule;
+endmodule

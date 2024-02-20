@@ -7,7 +7,7 @@ module tb_top;
     logic clk = 1'b0;
     logic rst = 1'b1;
 
-    logic imem_rdy, dmem_rdy, ivalid, dvalid, idata, ddata, iproc_req, dproc_req, iaddr, daddr;
+    logic imem_rdy, dmem_rdy, ivalid, dvalid, idata, ddata, iproc_req, dproc_req, iaddr, daddr, wen;
 
     // Create a clock generator
     always #5 clk = ~clk;
@@ -28,10 +28,13 @@ module tb_top;
         .iproc_req(iproc_req),
         .dproc_req(dproc_req),
         .iaddr(iaddr),
-        .daddr(daddr)
+        .daddr(daddr),
+        .op2mem(op2mem),
+        .wenMem(wen)
     );
 
 
+/*      INSTRUCTION MEMORY      */
 
    mem_wrap_fake #(
                    .CONTENT_TYPE( 0 ),
@@ -48,5 +51,25 @@ module tb_top;
       .RDATA( idata ),
       .VALID( ivalid )
    );
+
+/*      DATA MEMORY     */
+
+   mem_wrap_fake #(
+                   .CONTENT_TYPE( 1 ),
+                   .tco( 0 ),
+                   .tpd( 0 )
+   ) UUT (
+      .CLK( clk ),
+      .RSTn( rst ),
+      .PROC_REQ( dproc_req ),
+      .MEM_RDY( dmem_rdy ),
+      .ADDR(daddr),
+      .WE( wen ),    //????? mancante
+      .WDATA(op2mem),
+      .RDATA( ddata ),
+      .VALID( dvalid )
+   );
+
+
 
 endmodule

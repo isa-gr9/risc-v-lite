@@ -100,7 +100,7 @@ module execute #(parameter N = 32) (
         case (forwardA) 
             2'b00: operand1 = muxOutA;
             2'b01: operand1 = muxOut_fwd;
-            2'b10: operand1 = ALUres_fwd;
+            2'b10: operand1 = ALUres;
         endcase
     end
 
@@ -108,7 +108,7 @@ module execute #(parameter N = 32) (
         case(forwardB) 
             2'b00: operand2 = muxOutB;
             2'b01: operand2 = muxOut_fwd;
-            2'b10: operand2 = ALUres_fwd;
+            2'b10: operand2 = ALUres;
         endcase
     end
     

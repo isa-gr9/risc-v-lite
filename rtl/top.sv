@@ -12,7 +12,9 @@ module top #(
     output logic iproc_req,
     output logic dproc_req,
     output logic [NBITS-1:0] iaddr,
-    output logic [NBITS-1:0] daddr
+    output logic [NBITS-1:0] daddr,
+    output logic [NBITS-1:0] op2mem,
+    output logic wenMem
 );
 
     logic pc_en, stall, cw, aluOp, ir, memStall, pipe;
@@ -29,7 +31,9 @@ module top #(
         .mem_addr(daddr),       // to data memory
         .ir2cu(ir),
         .stall(stall),          // to CU
-        .memStall(memStall)
+        .memStall(memStall),
+        .op2mem(op2mem),
+        .wenMem(wenMem)
     );
 
 

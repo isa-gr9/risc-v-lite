@@ -21,11 +21,13 @@ module datapath #(parameter nbits = 32) (
 	input logic [3:0] aluOp,			// from contorl unit
 	input logic [nbits-1:0] mem_data,   // from data memory
     input logic [nbits-1:0] i_data,     // from instruction memory
-  	output [nbits-1:0] pc2mem,			// to instruction memory
-	output [nbits-1:0] mem_addr,		// to data memory
-    output [nbits-1:0] ir2cu,
-	output stall, 						// to CU
-    output memStall
+  	output logic [nbits-1:0] pc2mem,			// to instruction memory
+	output logic [nbits-1:0] mem_addr,		// to data memory
+    output logic [nbits-1:0] ir2cu,
+	output logic stall, 						// to CU
+    output logic memStall,
+    output logic [nbits-1:0] op2mem,
+    output logic we_out
 );
 
 logic muxsel_jmp; // from write back stage
@@ -44,7 +46,6 @@ logic [nbits-1:0] r1,r2; 	// read from register file
 logic [nbits-1:0] rdestExe, rdestMem, rdestWb; 	// read from register file
 logic [nbits-1:0] immDecode, immExe, immMem; 	// immediate from decode stage
 logic [nbits-1:0] aluresExe, aluresMem; 	// immediate from decode stage
-logic [nbits-1:0] op2mem;
 logic pc_selExe;
 
 
@@ -66,7 +67,7 @@ assign load = cw_mem[2];
 
 assign ir2cu = irFetch;
 
-assign nop_cw = 101100000000001;
+assign nop_cw = 15'b101100000000001;
 
 
 always_comb begin : hdu_cw_ctrl
@@ -120,7 +121,7 @@ decodeUnit #(nbits,nbits) DECODE (
   .npc_out(npcDecode),
   .pc_out(pcDecode),
   .cw_exe(cw_exe),
-  .aluop_exe(aluop_exe)
+  .aluop_exe(aluop_exe),
   .Rdestination(rdestDecode)
 );
 
@@ -174,7 +175,7 @@ memory #(nbits) MEM (
     .IMMout(immMem),
     .Rdest_out(rdestMem),
     .cwWB(cw_wb),
-    .stallMem(memStall),
+    .stallMem(memStall)
 );
 
 
@@ -186,7 +187,7 @@ wb #(nbits) WB (
     .NPCin(npcMem),        // from MEM/WB reg
     .regDest_in(rdestMem),   // from MEM/WB Register destination
     .data_out(datain),
-    .regDest_out(rdestWb),  // to RF register destination
+    .regDest_out(rdestWb)  // to RF register destination
 );
 
 

@@ -1,7 +1,6 @@
 module memory #(parameter N = 32) (
     input logic clk,
     input logic rst,
-    input logic[6:0] cwMEM,
     input logic pipe_en,
     input logic mem_ready,          //from memory
     input logic valid,              //from memory

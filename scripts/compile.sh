@@ -13,12 +13,12 @@ vlog -reportprogress 300 -work work ../rtl/decode/reg_generator.sv
 vlog -reportprogress 300 -work work ../rtl/decode/decode.sv 
 vlog -reportprogress 300 -work work ../rtl/exe/alu.sv 
 vlog -reportprogress 300 -work work ../rtl/exe/execute.sv 
-vlog -reportprogress 300 -work work ../rtl/exe/adder.sv 
+vlog -reportprogress 300 -work work ../rtl/fetch/adder.sv 
 vlog -reportprogress 300 -work work ../rtl/fetch/fetcher.sv 
 vlog -reportprogress 300 -work work ../rtl/fetch/ifu.sv 
-vlog -reportprogress 300 -work work ../rtl/wb/loadstoreunit.sv 
-vlog -reportprogress 300 -work work ../rtl/wb/memory.sv 
-vlog -reportprogress 300 -work work ../rtl//wb/wb.sv 
+vlog -reportprogress 300 -work work ../rtl/mem/loadStore.sv 
+vlog -reportprogress 300 -work work ../rtl/mem/memory.sv 
+vlog -reportprogress 300 -work work ../rtl/wb/wb.sv 
 vlog -reportprogress 300 -work work ../rtl/fwu.sv 
 vlog -reportprogress 300 -work work ../rtl/hdu.sv 
 vlog -reportprogress 300 -work work ../rtl/datapath.sv 
