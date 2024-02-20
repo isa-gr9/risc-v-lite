@@ -4,24 +4,24 @@
 set -e
 
 
-vlog -reportprogress 300 -work work ffd.sv 
-vlog -reportprogress 300 -work work mux21generic.sv 
-vlog -reportprogress 300 -work work register_generic.sv 
-vlog -reportprogress 300 -work work cu.sv 
-vlog -reportprogress 300 -work work RegisterFile.sv 
-vlog -reportprogress 300 -work work reg_generator.sv 
-vlog -reportprogress 300 -work work decode.sv alu.sv 
-vlog -reportprogress 300 -work work execute.sv 
-vlog -reportprogress 300 -work work adder.sv 
-vlog -reportprogress 300 -work work fetcher.sv 
-vlog -reportprogress 300 -work work ifu.sv 
-vlog -reportprogress 300 -work work loadstoreunit.sv 
-vlog -reportprogress 300 -work work memory.sv 
-vlog -reportprogress 300 -work work wb.sv 
-vlog -reportprogress 300 -work work fwu.sv 
-vlog -reportprogress 300 -work work hdu.sv 
-vlog -reportprogress 300 -work work datapath.sv 
-vlog -reportprogress 300 -work work top.sv
+vlog -reportprogress 300 -work work ../rtl/basic_elements/ffd.sv 
+vlog -reportprogress 300 -work work ../rtl/basic_elements/mux21generic.sv 
+vlog -reportprogress 300 -work work ../rtl/basic_elements/register_generic.sv 
+vlog -reportprogress 300 -work work ../rtl/cu/cu.sv 
+vlog -reportprogress 300 -work work ../rtl/decode/RegisterFile.sv 
+vlog -reportprogress 300 -work work ../rtl/decode/reg_generator.sv 
+vlog -reportprogress 300 -work work ../rtl/decode/decode.sv alu.sv 
+vlog -reportprogress 300 -work work ../rtl/exe/execute.sv 
+vlog -reportprogress 300 -work work ../rtl/exe/adder.sv 
+vlog -reportprogress 300 -work work ../rtl/fetch/fetcher.sv 
+vlog -reportprogress 300 -work work ../rtl/fetch/ifu.sv 
+vlog -reportprogress 300 -work work ../rtl/wb/loadstoreunit.sv 
+vlog -reportprogress 300 -work work ../rtl/wb/memory.sv 
+vlog -reportprogress 300 -work work ../rtl//wb/wb.sv 
+vlog -reportprogress 300 -work work ../rtl/fwu.sv 
+vlog -reportprogress 300 -work work ../rtl/hdu.sv 
+vlog -reportprogress 300 -work work ../rtl/datapath.sv 
+vlog -reportprogress 300 -work work ../rtl/top.sv
 
 
 
