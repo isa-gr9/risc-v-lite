@@ -4,6 +4,7 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
   input logic [14:0] cw,
   input logic [3:0] aluop,
   input logic [4:0] addrWrIn,
+  input logic pipe_en,
   input logic wr_en,
   input logic [nbits-1:0] ir_in,
   input logic [nbits-1:0] npc_in,

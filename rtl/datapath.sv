@@ -1,6 +1,6 @@
 /*
 
-MAGAGNE:
+MAGAGNA:
 
 - FLUSH DELLA PIPELINE DA DOVE ARRIVA?
 
@@ -16,20 +16,19 @@ module datapath #(parameter nbits = 32) (
 	input logic clk,
 	input logic rst,
 	input logic pc_en,
+    input logic pipe_en,
 	input logic [14:0] cw,				// from control unit
 	input logic [3:0] aluOp,			// from contorl unit
 	input logic [nbits-1:0] mem_data,   // from data memory
     input logic [nbits-1:0] i_data,     // from instruction memory
-	//input logic IFID_enable,            //from hazard detection unit
-    //input logic muxControl,              //from hazard detection unit
   	output [nbits-1:0] pc2mem,			// to instruction memory
 	output [nbits-1:0] mem_addr,		// to data memory
     output [nbits-1:0] ir2cu,
-	output stall 						// to CU
+	output stall, 						// to CU
+    output memStall
 );
 
 logic muxsel_jmp; // from write back stage
-logic pipe_en;		//?
 logic Imem_rdy, Ivalid, Iproc_req; // from/to instr mem
 //logic pc_en;
 logic [nbits-1:0] jpc; 		// branch target PC
@@ -86,7 +85,7 @@ ifu #(nbits) FETCH (
 	.rst(rst),
     .brjmp_ctrl(pc_selExe),
     .hazard(IFID_enable),
-    .flush(flush),
+    .flush(pc_selExe),
     .pipe_en(pipe_en),            
     .mem_rdy(Imem_rdy),            
     .valid(Ivalid),              
@@ -107,12 +106,13 @@ decodeUnit #(nbits,nbits) DECODE (
   .cw(cw_tmp),
   .aluop(aluOp),
   .addWrIn(rdestWb),
+  .pipe_en(pipe_en),
   .wr_en(cw_wb),
   .ir_in(irFetch),
   .npc_in(npcFetch),
   .pc_in(pcFetch),
   .datain(datain),
-  .flush(flush),
+  .flush(pc_selExe),
   .hazflush(hazard),
   .r1(r1),
   .r2(r2),
@@ -174,7 +174,7 @@ memory #(nbits) MEM (
     .IMMout(immMem),
     .Rdest_out(rdestMem),
     .cwWB(cw_wb),
-    .stallMem(!pipe_en),
+    .stallMem(memStall),
 );
 
 

@@ -15,30 +15,32 @@ module top #(
     output logic [NBITS-1:0] daddr
 );
 
-    logic pc_en, stall, cw, aluOp, ir;
+    logic pc_en, stall, cw, aluOp, ir, memStall, pipe;
 
     datapath #(NBITS) datap_inst (
         .clk(clk),
         .rst(rst),
         .pc_en(pc_en),
+        .pipe_en(pipe),
         .cw(cw),                // from control unit
         .aluOp(aluOp),        // from contorl unit
         .mem_data(ddata),       // from data memory
-        //.IFID_enable(),       //from hazard detection unit
-        //.muxControl(),        //from hazard detection unit
         .pc2mem(iaddr),			// to instruction memory
         .mem_addr(daddr),       // to data memory
         .ir2cu(ir),
-        .stall(stall)           // to CU
+        .stall(stall),          // to CU
+        .memStall(memStall)
     );
 
 
     cu cu_inst (
         .instr(ir),
         .stall(stall),
+        .memStall(memStall),
         .pc_en(pc_en),
         .cw(cw),
-        .aluOp(aluOp)
+        .aluOp(aluOp),
+        .pipe_en(pipe)
     );
 
 endmodule
