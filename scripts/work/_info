@@ -1,0 +1,216 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/gianluca/Desktop/git/isa/risc-v-lite/scripts
+vALU
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1708388068
+!i10b 1
+!s100 JTnLoUCcg4HEb]5i]bVoK2
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IHR`6f>5Vjb6nSZ_g5SU><3
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+Z5 w1708385169
+8../rtl/exe/alu.sv
+F../rtl/exe/alu.sv
+!i122 21
+L0 1 48
+Z6 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z7 !s108 1708388068.000000
+!s107 ../rtl/exe/alu.sv|
+!s90 -reportprogress|300|-work|work|../rtl/exe/alu.sv|
+!i113 1
+Z8 o-work work
+Z9 tCvgOpt 0
+n@a@l@u
+vcu
+R1
+Z10 !s110 1708388067
+!i10b 1
+!s100 Ca48A8B<M]1meKDGc26[f2
+R3
+IEToPSHi7Zgj8IPmBV1D0A0
+R4
+S1
+R0
+R5
+8../rtl/cu/cu.sv
+F../rtl/cu/cu.sv
+!i122 17
+L0 1 96
+R6
+r1
+!s85 0
+31
+Z11 !s108 1708388067.000000
+!s107 ../rtl/cu/cu.sv|
+!s90 -reportprogress|300|-work|work|../rtl/cu/cu.sv|
+!i113 1
+R8
+R9
+vdecodeUnit
+R1
+R2
+!i10b 1
+!s100 c6POfNb0F]4Fhj3IS4nE[1
+R3
+I;I^4`Uk5IhJFGb<1]h4?]3
+R4
+S1
+R0
+w1708385907
+8../rtl/decode/decode.sv
+F../rtl/decode/decode.sv
+!i122 20
+L0 1 134
+R6
+r1
+!s85 0
+31
+R7
+!s107 ../rtl/decode/decode.sv|
+!s90 -reportprogress|300|-work|work|../rtl/decode/decode.sv|
+!i113 1
+R8
+R9
+ndecode@unit
+vFD
+R1
+R10
+!i10b 1
+!s100 oXahf9OWOX@jMH?@@36fd2
+R3
+Ih8B^B7BTY18C387SN=W_d3
+R4
+S1
+R0
+R5
+8../rtl/basic_elements/ffd.sv
+F../rtl/basic_elements/ffd.sv
+!i122 14
+L0 1 18
+R6
+r1
+!s85 0
+31
+R11
+!s107 ../rtl/basic_elements/ffd.sv|
+!s90 -reportprogress|300|-work|work|../rtl/basic_elements/ffd.sv|
+!i113 1
+R8
+R9
+n@f@d
+vMUX21_GENERIC
+R1
+R10
+!i10b 1
+!s100 LT95kK<aUC5ViMEh3M0mh0
+R3
+ISbG<2E5fhgC0;mf:z8dWf3
+R4
+S1
+R0
+w1704455489
+8../rtl/basic_elements/mux21generic.sv
+F../rtl/basic_elements/mux21generic.sv
+!i122 15
+L0 1 15
+R6
+r1
+!s85 0
+31
+R11
+!s107 ../rtl/basic_elements/mux21generic.sv|
+!s90 -reportprogress|300|-work|work|../rtl/basic_elements/mux21generic.sv|
+!i113 1
+R8
+R9
+n@m@u@x21_@g@e@n@e@r@i@c
+vREGISTER_FILE
+R1
+R10
+!i10b 1
+!s100 QJW1`>F4?_3:0Q5]D3;GL3
+R3
+I837D?d?18GJ>:Ui]EBaCK0
+R4
+S1
+R0
+R5
+8../rtl/decode/RegisterFile.sv
+F../rtl/decode/RegisterFile.sv
+!i122 18
+L0 1 49
+R6
+r1
+!s85 0
+31
+R11
+!s107 ../rtl/decode/RegisterFile.sv|
+!s90 -reportprogress|300|-work|work|../rtl/decode/RegisterFile.sv|
+!i113 1
+R8
+R9
+n@r@e@g@i@s@t@e@r_@f@i@l@e
+vregister_generator
+R1
+R2
+!i10b 1
+!s100 d3R3dTKTM2;K2T98YT<LA3
+R3
+I=h2JQdNJ_o]X@g]9Ia02P2
+R4
+S1
+R0
+w1704707584
+8../rtl/decode/reg_generator.sv
+F../rtl/decode/reg_generator.sv
+!i122 19
+L0 1 94
+R6
+r1
+!s85 0
+31
+R11
+!s107 ../rtl/decode/reg_generator.sv|
+!s90 -reportprogress|300|-work|work|../rtl/decode/reg_generator.sv|
+!i113 1
+R8
+R9
+vregister_generic
+R1
+R10
+!i10b 1
+!s100 gSC1B3o0H3nJXPBFlHRMm1
+R3
+IPROTmj9m52jz`1OhWP>Dk2
+R4
+S1
+R0
+R5
+8../rtl/basic_elements/register_generic.sv
+F../rtl/basic_elements/register_generic.sv
+!i122 16
+L0 1 28
+R6
+r1
+!s85 0
+31
+R11
+!s107 ../rtl/basic_elements/register_generic.sv|
+!s90 -reportprogress|300|-work|work|../rtl/basic_elements/register_generic.sv|
+!i113 1
+R8
+R9
