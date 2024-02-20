@@ -122,7 +122,7 @@ module execute #(parameter N = 32) (
         .zero(ZEROout)
         );
 
-    
+
     register_generic #(N) ALUout_REG_EXMEM (
         .data_in(ALUout),
         .CK(clk),
@@ -130,7 +130,7 @@ module execute #(parameter N = 32) (
         .ENABLE(pipe_en),
         .data_out(ALUres)
     );
-    
+
     register_generic #(N) B_REG_EXMEM (
         .data_in(r2),
         .CK(clk),
