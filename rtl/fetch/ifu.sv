@@ -35,17 +35,18 @@ module ifu #(parameter bits=32) (
     output logic [bits-1:0] pc,      // to IF/ID 
     output logic [bits-1:0] pc2mem,  // to IMEM for req/rdy protocol
     output logic [bits-1:0] npc,     // to IF/ID 
-    output logic [bits-1:0] ir       // to decode unit
+    output logic [bits-1:0] ir      // to decode unit
 );
 
-localparam [31:0] nop = 32'h00000013; // nop instruction
+localparam [31:0] nop = 32'h00001F13; // nop instruction
 logic [bits-1:0] npc_loc, pc_loc_i, pc_loc_o, ir_loc_i, ir_loc_o;
 logic rst_logic;
+logic prev_valid;
 
 /* Hazard detection and instruction memory not ready */
-assign pc_en_loc = hazard & pc_en;
+assign pc_en_loc = brjmp_ctrl | (hazard & pc_en);
 
-assign rst_logic = rst | flush;
+assign rst_logic = rst & flush;
 
 
 MUX21_GENERIC #(bits) pc_src(
@@ -54,6 +55,15 @@ MUX21_GENERIC #(bits) pc_src(
     .S(brjmp_ctrl),
     .Y(pc_loc_i)
 );
+
+// register_generic_pc #(bits) pc_register(
+//     .data_in(pc_loc_i),
+//     .CK(clk),
+//     .RESET(rst),
+//     .brjmp(brjmp_ctrl),
+//     .ENABLE(pc_en_loc),
+//     .data_out(pc_loc_o)
+// );
 
 register_generic #(bits) pc_register(
     .data_in(pc_loc_i),
@@ -77,17 +87,26 @@ fetcher #(bits) fetcher(
     .addr_in(pc_loc_o),
     .rdata(rdata),
     .addr_out(pc2mem),
+    .brjmp_ctrl(brjmp_ctrl),
     .ir(ir_loc_i),
     .stall(stall),
     .proc_req(proc_req)
 );
 
-MUX21_GENERIC #(bits) ir_src(
-    .A(nop),
-    .B(ir_loc_i),
-    .S(stall),
-    .Y(ir_loc_o)
-);
+    // always_ff @(posedge clk or negedge rst) begin : prevValid
+    //      if (!rst) begin
+    //          prev_valid <= 1'b0;  // Initialize to some default value
+    //      end else begin
+    //          prev_valid <= valid;
+    //      end
+    //  end
+
+// MUX21_GENERIC #(bits) ir_src(
+//     .A(ir_loc_i),
+//     .B(nop),
+//     .S(prev_valid),
+//     .Y(ir_loc_o)
+// );
 
 /********************************************
 * Pipeline registers
@@ -116,5 +135,6 @@ register_generic #(bits) nIR_pipereg(
     .ENABLE(pipe_en),
     .data_out(ir)
 );
+
 
 endmodule

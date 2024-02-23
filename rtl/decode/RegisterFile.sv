@@ -16,12 +16,10 @@ module REGISTER_FILE #(parameter NBITS = 32, NREGISTERS = 32) (
   logic [NBITS-1:0] registers [0:NREGISTERS-1];
 
 
-
-
   always_comb begin
-    if (rst) begin
+    if (!rst) begin
       for (int i = 0; i < NREGISTERS; i++) begin
-        registers[i] <= 0;
+        registers[i] = 0;
       end
       out1 = 0;
       out2 = 0;
@@ -32,13 +30,11 @@ module REGISTER_FILE #(parameter NBITS = 32, NREGISTERS = 32) (
         end else begin
           out1 = 0;
         end
-
         if (rd2_en) begin
           out2 = registers[add_rd2];
         end else begin
           out2 = 0;
         end
-
         if (wr_en) begin
           registers[add_wr] = datain;
         end

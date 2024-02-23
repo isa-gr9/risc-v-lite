@@ -1,0 +1,91 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : top
+Version: S-2021.06-SP4
+Date   : Fri Feb 23 18:23:25 2024
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: datap_inst/FETCH/pc_register/register_reg[3]
+              (rising edge-triggered flip-flop clocked by clk_sys)
+  Endpoint: datap_inst/FETCH/pc_register/register_reg[29]
+            (rising edge-triggered flip-flop clocked by clk_sys)
+  Path Group: clk_sys
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  top                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_sys (rise edge)                               0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  datap_inst/FETCH/pc_register/register_reg[3]/CK (DFFR_X1)
+                                                          0.00       0.00 r
+  datap_inst/FETCH/pc_register/register_reg[3]/QN (DFFR_X1)
+                                                          0.06       0.06 f
+  datap_inst/FETCH/pc_register/U44/ZN (INV_X1)            0.04       0.11 r
+  datap_inst/FETCH/pc_register/data_out[3] (register_generic_nbits32_1)
+                                                          0.00       0.11 r
+  datap_inst/FETCH/add/PC[3] (adder_bits32)               0.00       0.11 r
+  datap_inst/FETCH/add/add_7/A[3] (adder_bits32_DW01_add_1)
+                                                          0.00       0.11 r
+  datap_inst/FETCH/add/add_7/U83/ZN (NAND2_X1)            0.04       0.14 f
+  datap_inst/FETCH/add/add_7/U82/ZN (NOR2_X1)             0.03       0.18 r
+  datap_inst/FETCH/add/add_7/U74/ZN (AND3_X1)             0.06       0.23 r
+  datap_inst/FETCH/add/add_7/U20/CO (HA_X1)               0.06       0.29 r
+  datap_inst/FETCH/add/add_7/U19/CO (HA_X1)               0.06       0.35 r
+  datap_inst/FETCH/add/add_7/U18/CO (HA_X1)               0.06       0.41 r
+  datap_inst/FETCH/add/add_7/U17/CO (HA_X1)               0.06       0.47 r
+  datap_inst/FETCH/add/add_7/U16/CO (HA_X1)               0.06       0.52 r
+  datap_inst/FETCH/add/add_7/U15/CO (HA_X1)               0.06       0.58 r
+  datap_inst/FETCH/add/add_7/U14/CO (HA_X1)               0.06       0.64 r
+  datap_inst/FETCH/add/add_7/U13/CO (HA_X1)               0.06       0.70 r
+  datap_inst/FETCH/add/add_7/U12/CO (HA_X1)               0.06       0.75 r
+  datap_inst/FETCH/add/add_7/U11/CO (HA_X1)               0.06       0.81 r
+  datap_inst/FETCH/add/add_7/U10/CO (HA_X1)               0.06       0.87 r
+  datap_inst/FETCH/add/add_7/U9/CO (HA_X1)                0.06       0.93 r
+  datap_inst/FETCH/add/add_7/U8/CO (HA_X1)                0.06       0.99 r
+  datap_inst/FETCH/add/add_7/U7/CO (HA_X1)                0.06       1.05 r
+  datap_inst/FETCH/add/add_7/U71/ZN (AND2_X1)             0.05       1.10 r
+  datap_inst/FETCH/add/add_7/U5/CO (HA_X1)                0.06       1.16 r
+  datap_inst/FETCH/add/add_7/U4/CO (HA_X1)                0.06       1.21 r
+  datap_inst/FETCH/add/add_7/U72/Z (XOR2_X1)              0.03       1.25 f
+  datap_inst/FETCH/add/add_7/SUM[29] (adder_bits32_DW01_add_1)
+                                                          0.00       1.25 f
+  datap_inst/FETCH/add/NPC[29] (adder_bits32)             0.00       1.25 f
+  datap_inst/FETCH/pc_src/B[29] (MUX21_GENERIC_bits32)
+                                                          0.00       1.25 f
+  datap_inst/FETCH/pc_src/U56/Z (MUX2_X1)                 0.07       1.31 f
+  datap_inst/FETCH/pc_src/Y[29] (MUX21_GENERIC_bits32)
+                                                          0.00       1.31 f
+  datap_inst/FETCH/pc_register/data_in[29] (register_generic_nbits32_1)
+                                                          0.00       1.31 f
+  datap_inst/FETCH/pc_register/U64/Z (MUX2_X1)            0.06       1.38 f
+  datap_inst/FETCH/pc_register/register_reg[29]/D (DFFR_X1)
+                                                          0.01       1.39 f
+  data arrival time                                                  1.39
+
+  clock clk_sys (rise edge)                               1.50       1.50
+  clock network delay (ideal)                             0.00       1.50
+  clock uncertainty                                      -0.07       1.43
+  datap_inst/FETCH/pc_register/register_reg[29]/CK (DFFR_X1)
+                                                          0.00       1.43 r
+  library setup time                                     -0.04       1.39
+  data required time                                                 1.39
+  --------------------------------------------------------------------------
+  data required time                                                 1.39
+  data arrival time                                                 -1.39
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1

@@ -1,0 +1,34 @@
+Running PRESTO HDLC
+Compiling source file ../rtl/basic_elements/ffd.sv
+Compiling source file ../rtl/basic_elements/mux21generic.sv
+Compiling source file ../rtl/basic_elements/register_generic.sv
+Compiling source file ../rtl/cu/cu.sv
+Compiling source file ../rtl/decode/RegisterFile.sv
+Compiling source file ../rtl/decode/reg_generator.sv
+Compiling source file ../rtl/decode/decode.sv
+Warning:  ../rtl/decode/decode.sv:34: the undeclared symbol 'rst_logic' assumed to have the default net type, which is 'wire'. (VER-936)
+Warning:  ../rtl/decode/decode.sv:35: the undeclared symbol 'rst_cw' assumed to have the default net type, which is 'wire'. (VER-936)
+Warning:  ../rtl/decode/decode.sv:38: the undeclared symbol 'rd1_en' assumed to have the default net type, which is 'wire'. (VER-936)
+Warning:  ../rtl/decode/decode.sv:39: the undeclared symbol 'rd2_en' assumed to have the default net type, which is 'wire'. (VER-936)
+Compiling source file ../rtl/exe/alu.sv
+Compiling source file ../rtl/exe/execute.sv
+Warning:  ../rtl/exe/execute.sv:38: the undeclared symbol 'muxSelA' assumed to have the default net type, which is 'wire'. (VER-936)
+Warning:  ../rtl/exe/execute.sv:39: the undeclared symbol 'muxSelB' assumed to have the default net type, which is 'wire'. (VER-936)
+Warning:  ../rtl/exe/execute.sv:40: the undeclared symbol 'branch' assumed to have the default net type, which is 'wire'. (VER-936)
+Warning:  ../rtl/exe/execute.sv:41: the undeclared symbol 'jmp_en' assumed to have the default net type, which is 'wire'. (VER-936)
+Compiling source file ../rtl/fetch/adder.sv
+Compiling source file ../rtl/fetch/fetcher.sv
+Compiling source file ../rtl/fetch/ifu.sv
+Warning:  ../rtl/fetch/ifu.sv:47: the undeclared symbol 'pc_en_loc' assumed to have the default net type, which is 'wire'. (VER-936)
+Compiling source file ../rtl/mem/loadStore.sv
+Compiling source file ../rtl/mem/memory.sv
+Compiling source file ../rtl/wb/wb.sv
+Warning:  ../rtl/wb/wb.sv:13: the undeclared symbol 'mem2reg' assumed to have the default net type, which is 'wire'. (VER-936)
+Compiling source file ../rtl/fwu.sv
+Compiling source file ../rtl/hdu.sv
+Compiling source file ../rtl/datapath.sv
+Compiling source file ../rtl/top.sv
+Presto compilation completed successfully.
+Loading db file '/eda/dk/nangate45/synopsys/NangateOpenCellLibrary_typical_ecsm_nowlm.db'
+Loading db file '/eda/synopsys/2021-22/RHELx86/SYN_2021.06-SP4/libraries/syn/dw_foundation.sldb'
+1

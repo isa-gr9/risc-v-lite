@@ -13,11 +13,15 @@ module top #(
     output logic dproc_req,
     output logic [NBITS-1:0] iaddr,
     output logic [NBITS-1:0] daddr,
-    output logic [NBITS-1:0] op2mem,
+    output logic [NBITS-1:0] wdata2mem,
     output logic wenMem
 );
 
-    logic pc_en, stall, cw, aluOp, ir, memStall, pipe;
+    logic pc_en, stall, memStall, pipe;
+
+    logic [NBITS-1:0] ir;
+    logic [3:0] aluOp;
+    logic [14:0] cw;
 
     datapath #(NBITS) datap_inst (
         .clk(clk),
@@ -25,15 +29,22 @@ module top #(
         .pc_en(pc_en),
         .pipe_en(pipe),
         .cw(cw),                // from control unit
-        .aluOp(aluOp),        // from contorl unit
+        .aluOp(aluOp),          // from contorl unit
         .mem_data(ddata),       // from data memory
+        .idata(idata),         // from instruction memory
         .pc2mem(iaddr),			// to instruction memory
         .mem_addr(daddr),       // to data memory
         .ir2cu(ir),
+        .ivalid(ivalid),
+        .dvalid(dvalid),
+        .imem_rdy(imem_rdy),
+        .dmem_rdy(dmem_rdy),
         .stall(stall),          // to CU
         .memStall(memStall),
-        .op2mem(op2mem),
-        .wenMem(wenMem)
+        .iproc_req(iproc_req),
+        .dproc_req(dproc_req),
+        .wdata2mem(wdata2mem),
+        .we_out(wenMem)
     );
 
 

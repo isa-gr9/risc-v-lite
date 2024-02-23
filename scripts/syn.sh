@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # Move to the run directory
-cd ../syn
+cd ../syn/
+
 mkdir work
 
 source /eda/scripts/init_design_vision
@@ -15,6 +16,7 @@ FINALS=${FILE}_${DATE}_${TIME}_dc${EXT}
 
 echo "Running the synthesis.."
 
-dc_shell-xg-t -64 -f ../scripts/syn.tcl > ${FINALS}
+#dc_shell-xg-t -64 -f ../scripts/syn.tcl > ${FINALS}
 
 
+dc_shell-xg-t -64 -f ../scripts/syn.tcl

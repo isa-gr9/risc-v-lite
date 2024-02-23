@@ -19,15 +19,20 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
   output logic [nbits-1:0] pc_out,
   output logic [12:0] cw_exe,
   output logic [3:0] aluop_exe,
-  output logic [4:0] Rdestination
+  output logic [4:0] Rdestination,
+  output  logic [4:0]  add_r1_out, 
+  output logic [4:0]  add_r2_out
 );
 
   logic rstfls;
   logic [nbits-1:0] RF_out1, RF_out2, signExtOut;
+  logic [4:0] add_wr;
+  logic [4:0] add_r1;
+  logic [4:0] add_r2;
 
   // flush logic
-  assign rst_logic = rst | flush | !hazflush;
-  assign rst_cw = rst | flush;
+  assign rst_logic = rst & flush & hazflush;
+  assign rst_cw = rst & flush;
 
   //control word signals dispatch
   assign rd1_en = cw[14];
@@ -45,17 +50,17 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
 
 //register file
   REGISTER_FILE #(nbits) rf_inst (
-    .CLK(clk),
-    .RESET(rst),
-    .RD1(rd1_en),
-    .RD2(rd2_en),
-    .WR(wr_en),
-    .ADD_RD1(add_r1),
-    .ADD_RD2(add_r2),
-    .ADD_WR(addrWrIn),
-    .DATAIN(data_in),
-    .OUT1(RF_out1),
-    .OUT2(RF_out2)
+    .clk(clk),
+    .rst(rst),
+    .rd1_en(rd1_en),
+    .rd2_en(rd2_en),
+    .wr_en(wr_en),
+    .add_rd1(add_r1),
+    .add_rd2(add_r2),
+    .add_wr(addrWrIn),
+    .datain(datain),
+    .out1(RF_out1),
+    .out2(RF_out2)
   );
 
 /*********************************************
@@ -79,7 +84,7 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
     .data_out(aluop_exe)
   );
 
-  register_generic #(4) register_dest_pipe (
+  register_generic #(5) register_dest_pipe (
     .data_in(add_wr),
     .CK(clk),
     .RESET(rst_logic),
@@ -108,7 +113,7 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
     .CK(clk),
     .RESET(rst_logic),
     .ENABLE(pipe_en),
-    .data_out(Imm_out)
+    .data_out(imm_out)
   );
 
 
@@ -128,7 +133,21 @@ module decodeUnit #(parameter nbits = 32, bits = 32) (
     .data_out(r2)
   );
 
+ register_generic #(5) ADDR_RS1_OUT (
+   .data_in(add_r1),
+   .CK(clk),
+   .RESET(rst_logic),
+   .ENABLE(pipe_en),
+   .data_out(add_r1_out)
+ );
 
+  register_generic #(5) ADDR_RS2_OUT (
+    .data_in(add_r2),
+    .CK(clk),
+    .RESET(rst_logic),
+    .ENABLE(pipe_en),
+    .data_out(add_r2_out)
+  );
 
 
 endmodule

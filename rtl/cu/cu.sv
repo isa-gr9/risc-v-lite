@@ -1,9 +1,11 @@
 module cu (
     input  logic [31:0] instr,
     input  logic        stall,
+    input  logic        memStall,
     output logic        pc_en,
-    output logic [15:0] cw,
-    output logic [3:0]  aluOp
+    output logic [14:0] cw,
+    output logic [3:0]  aluOp,
+    output logic        pipe_en
 );
     logic [1:0]  mem2reg;
     logic [2:0]  branchContr;
@@ -27,6 +29,8 @@ module cu (
     assign func3      = instr[14:12];
     assign func7bit5  = instr[30];
 
+    assign pipe_en = !memStall;
+
     assign {rd1_en, rd2_en, regWrite, aluSrc1, aluSrc2, memWrite, memRead,
             mem2reg, branch, jump, aluopTmp, loadReq, storeReq} = cw_tmp;
 
@@ -49,7 +53,7 @@ module cu (
                 7'b1100011: cw_tmp = 15'b1_1_0_0_0_0_0_00_1_0_00_0_0;  //BRANCH
                 7'b1101111: cw_tmp = 15'b1_0_1_1_0_0_0_10_0_1_00_0_0;  //JTYPE
                 7'b1100111: cw_tmp = 15'b1_0_1_1_1_0_0_10_0_1_00_0_0;  //RET- jalr
-                default:    cw_tmp = 15'bxxxxxxxxxxxxxxx;           //unknown
+                default:    cw_tmp = 15'b000000000000000;//15'bxxxxxxxxxxxxxxx;           //unknown
             endcase
         end
     end
@@ -87,8 +91,8 @@ module cu (
     end
 
 
-    always_comb begin : stallFromFetcher
-        if (stall) pc_en = 1'b0;
+    always_comb begin : stall_PC
+        if (stall || memStall) pc_en = 1'b0;
         else pc_en = 1'b1;
     end
 

@@ -1,6 +1,6 @@
 module execute #(parameter N = 32) (
     input logic clk,
-    input logic rst, 
+    input logic rst,
     input logic[12:0] cwEX,
     input logic[3:0] aluOp,
     input logic pipe_en,
@@ -31,53 +31,63 @@ module execute #(parameter N = 32) (
     logic [N-1 : 0] NPC;
     logic [N-1 : 0] ALUout;
     logic PC_sel_i;
-    logic[8:0] cwMEM_i;
+	logic [N-1 : 0] jPC_i;
+    logic[6:0] cwMEM_i;
     logic BRANCH_OUTCOME, ZEROout;
 
-    assign muxSelA = cwEX[12];
-    assign muxSelB = cwEX[11];
+    assign muxSelA = cwEX[11];
+    assign muxSelB = cwEX[12];
     assign branch = cwEX[10:8];
     assign jmp_en = cwEX[7];
+    assign cwMEM_i = cwEX[6:0];
 
     //assign PC_sel_i = (BRANCH_OUTCOME & branch) | jmp_en
 
     //branch target address generation
-    always_comb                                   //NOTA: NON HO AGGIUNTO IL REGISTRO DI PIPELINE CON jPC PROPAGATO PERCHE' iL JPC PUO ESSERE PRESO DA ALU_RES SE GLI OPERANDI SONO SETTATI CORRETTAMENTE
-        begin
-            jPC = NPCin + {Imm, 1'b0};
+    always_comb
+    begin
+            if(jmp_en || branch) begin
+                jPC_i = (NPCin-4) + {Imm, 1'b0};
+            end
             PC_sel_i = ((BRANCH_OUTCOME & branch) | jmp_en);
-        end 
+    end
 
     always_comb begin
         case (branch)
-            000:
+            3'b000:
                 BRANCH_OUTCOME = 0;
-            001:  // CONDITION: A = B           //BEQ
-                if(r1 == r2)
+            3'b001:  // CONDITION: A = B           //BEQ
+                begin
+		if(r1 == r2)
                     BRANCH_OUTCOME = 1;
                 else
                     BRANCH_OUTCOME = 0;
-            010:                                //BNEQ
+            end
+		3'b010: begin                                //BNEQ
                 if(r1 != r2)
                     BRANCH_OUTCOME = 1;
                 else
                     BRANCH_OUTCOME = 0;
-            011:                                //BLEQ
+        end    
+	3'b011: begin                                //BLEQ
                 if(r1 <= r2)
                     BRANCH_OUTCOME = 1;
                 else
                     BRANCH_OUTCOME = 0;
-            100:                                //BLT
+        end    
+	3'b100: begin                                //BLT
                 if(r1 < r2)
                     BRANCH_OUTCOME = 1;
                 else
                     BRANCH_OUTCOME = 0;
-            101:                                //BGEQ
+        end    
+	3'b101: begin                                //BGEQ
                 if(r1 >= r2)
                     BRANCH_OUTCOME = 1;
                 else
                     BRANCH_OUTCOME = 0;
-            endcase 
+        	end    
+	endcase 
     end
 
 
@@ -174,9 +184,17 @@ module execute #(parameter N = 32) (
     register_generic #(5) RDEST_REG_EXMEM (
         .data_in(Rdest_in),
         .CK(clk),
-        .RESET(rst),
+        .RESET(rst),   
         .ENABLE(pipe_en),
         .data_out(Rdest)    
+    );
+
+    register_generic #(N) jPC_REG_EXMEM (
+        .data_in(jPC_i),
+        .CK(clk),
+        .RESET(rst),
+        .ENABLE(pipe_en),
+        .data_out(jPC)
     );
 
  endmodule

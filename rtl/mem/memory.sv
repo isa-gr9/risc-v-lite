@@ -20,11 +20,13 @@ module memory #(parameter N = 32) (
     output logic [N-1:0] IMMout,
     output logic [4:0] Rdest_out,
     output logic [2:0] cwWB,
+    output logic [N-1:0] loadDataWB,
     output logic stallMem
 );
 
     logic we_in;
     logic req;
+    logic memWrite, memRead, loadReq, storeReq;
 
     logic[N-1:0] loadData;
     logic[4:0] loadDest;
@@ -33,14 +35,8 @@ module memory #(parameter N = 32) (
     assign memRead = cwMEM[5];
     assign loadReq = cwMEM[4];
     assign storeReq = cwMEM[3];
-
-    always_comb
-    begin
-        we_in = memWrite | (!memRead);
-        req = loadReq | storeReq;
-    end
-
-
+    assign we_in = memWrite | (!memRead);
+    assign req = loadReq | storeReq;
 
     loadStore #(32, N) Load_Store_unit (
         .clk(clk),
@@ -50,7 +46,7 @@ module memory #(parameter N = 32) (
         .ADDR_IN(ALUres),
         .we_in(we_in),
         .WRITE_DATA(wrData_in),
-        .mem_rdy(mem_ready),         
+        .mem_rdy(mem_ready),
         .valid(valid),
         .rdata(rdata),
         .proc_req(proc_req),
@@ -59,11 +55,19 @@ module memory #(parameter N = 32) (
         .wdata(wdata),
         .loadData(loadData),
         .loadDest(loadDest),
-       .stall(stallMem)
+        .stall(stallMem)
     );
-    
-    
+
+
     //pipeline registers
+
+    register_generic #(N) dataFromMemory_reg (
+        .data_in(loadData),
+        .CK(clk),
+        .RESET(rst),
+        .ENABLE(pipe_en),
+        .data_out(loadDataWB)
+    );
 
     register_generic #(3) cw_MEMWB (
         .data_in(cwMEM[2:0]),
@@ -80,7 +84,7 @@ module memory #(parameter N = 32) (
         .ENABLE(pipe_en),
         .data_out(ALUout)
     );
-    
+
     register_generic #(N) NPC_reg_MEMWB (
         .data_in(NPCin),
         .CK(clk),
@@ -88,7 +92,7 @@ module memory #(parameter N = 32) (
         .ENABLE(pipe_en),
         .data_out(NPCout)
     );
-    
+
     register_generic #(N) Imm_reg_MEMWB (
         .data_in(IMMin),
         .CK(clk),
@@ -103,7 +107,7 @@ module memory #(parameter N = 32) (
         .CK(clk),
         .RESET(rst),
         .ENABLE(pipe_en),
-        .data_out(Rdest_out)    
+        .data_out(Rdest_out)
     );
-                
+
  endmodule

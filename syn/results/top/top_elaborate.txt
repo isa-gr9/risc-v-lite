@@ -1,0 +1,403 @@
+Loading db file '/eda/synopsys/2021-22/RHELx86/SYN_2021.06-SP4/libraries/syn/gtech.db'
+Loading db file '/eda/synopsys/2021-22/RHELx86/SYN_2021.06-SP4/libraries/syn/standard.sldb'
+  Loading link library 'NangateOpenCellLibrary'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Presto compilation completed successfully. (top)
+Elaborated 1 design.
+Current design is now 'top'.
+Information: Building the design 'datapath' instantiated from design 'top' with
+	the parameters "32". (HDL-193)
+Presto compilation completed successfully. (datapath_nbits32)
+Information: Building the design 'cu'. (HDL-193)
+
+Statistics for case statements in always block at line 44 in file
+	'../rtl/cu/cu.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            46            |    auto/auto     |
+===============================================
+
+Statistics for case statements in always block at line 61 in file
+	'../rtl/cu/cu.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            62            |    auto/auto     |
+|            65            |    auto/auto     |
+===============================================
+
+Statistics for case statements in always block at line 79 in file
+	'../rtl/cu/cu.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            81            |    auto/auto     |
+===============================================
+Presto compilation completed successfully. (cu)
+Information: Building the design 'ifu' instantiated from design 'datapath_nbits32' with
+	the parameters "32". (HDL-193)
+Presto compilation completed successfully. (ifu_bits32)
+Information: Building the design 'decodeUnit' instantiated from design 'datapath_nbits32' with
+	the parameters "32,32". (HDL-193)
+Presto compilation completed successfully. (decodeUnit_nbits32_bits32)
+Information: Building the design 'execute' instantiated from design 'datapath_nbits32' with
+	the parameters "32". (HDL-193)
+Warning:  ../rtl/exe/execute.sv:67: Statement unreachable (Branch condition impossible to meet).  (VER-61)
+Warning:  ../rtl/exe/execute.sv:73: Statement unreachable (Branch condition impossible to meet).  (VER-61)
+Warning:  ../rtl/exe/execute.sv:79: Statement unreachable (Branch condition impossible to meet).  (VER-61)
+Warning:  ../rtl/exe/execute.sv:85: Statement unreachable (Branch condition impossible to meet).  (VER-61)
+
+Statistics for case statements in always block at line 55 in file
+	'../rtl/exe/execute.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            56            |     no/auto      |
+===============================================
+
+Statistics for case statements in always block at line 109 in file
+	'../rtl/exe/execute.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           110            |     no/auto      |
+===============================================
+
+Statistics for case statements in always block at line 117 in file
+	'../rtl/exe/execute.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           118            |     no/auto      |
+===============================================
+
+Inferred memory devices in process
+	in routine execute_N32 line 47 in file
+		'../rtl/exe/execute.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|      jPC_i_reg      | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+
+Inferred memory devices in process
+	in routine execute_N32 line 109 in file
+		'../rtl/exe/execute.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|    operand1_reg     | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+
+Inferred memory devices in process
+	in routine execute_N32 line 117 in file
+		'../rtl/exe/execute.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|    operand2_reg     | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+Warning:  ../rtl/exe/execute.sv:47: Netlist for always_comb block contains a latch. (ELAB-974)
+Warning:  ../rtl/exe/execute.sv:109: Netlist for always_comb block contains a latch. (ELAB-974)
+Warning:  ../rtl/exe/execute.sv:117: Netlist for always_comb block contains a latch. (ELAB-974)
+Presto compilation completed successfully. (execute_N32)
+Information: Building the design 'memory' instantiated from design 'datapath_nbits32' with
+	the parameters "32". (HDL-193)
+Presto compilation completed successfully. (memory_N32)
+Information: Building the design 'wb' instantiated from design 'datapath_nbits32' with
+	the parameters "32". (HDL-193)
+Warning:  ../rtl/wb/wb.sv:23: Statement unreachable (Branch condition impossible to meet).  (VER-61)
+Warning:  ../rtl/wb/wb.sv:25: Statement unreachable (Branch condition impossible to meet).  (VER-61)
+
+Statistics for case statements in always block at line 16 in file
+	'../rtl/wb/wb.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            17            |    auto/auto     |
+===============================================
+Presto compilation completed successfully. (wb_N32)
+Information: Building the design 'fwu'. (HDL-193)
+
+Inferred memory devices in process
+	in routine fwu line 10 in file
+		'../rtl/fwu.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|    ForwardA_reg     | Latch |   2   |  Y  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+Warning:  ../rtl/fwu.sv:10: Netlist for always_comb block contains a latch. (ELAB-974)
+Presto compilation completed successfully. (fwu)
+Information: Building the design 'hdu'. (HDL-193)
+Presto compilation completed successfully. (hdu)
+Information: Building the design 'MUX21_GENERIC' instantiated from design 'ifu_bits32' with
+	the parameters "32". (HDL-193)
+Presto compilation completed successfully. (MUX21_GENERIC_bits32)
+Information: Building the design 'register_generic' instantiated from design 'ifu_bits32' with
+	the parameters "32". (HDL-193)
+
+Inferred memory devices in process
+	in routine register_generic_nbits32 line 12 in file
+		'../rtl/basic_elements/register_generic.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    register_reg     | Flip-flop |  32   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Warning:  ../rtl/basic_elements/register_generic.sv:26: Netlist for always_ff block is empty. (ELAB-984)
+Presto compilation completed successfully. (register_generic_nbits32)
+Information: Building the design 'adder' instantiated from design 'ifu_bits32' with
+	the parameters "32". (HDL-193)
+Presto compilation completed successfully. (adder_bits32)
+Information: Building the design 'fetcher' instantiated from design 'ifu_bits32' with
+	the parameters "32". (HDL-193)
+
+Statistics for case statements in always block at line 38 in file
+	'../rtl/fetch/fetcher.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            42            |    auto/auto     |
+===============================================
+
+Inferred memory devices in process
+	in routine fetcher_addressSize32 line 28 in file
+		'../rtl/fetch/fetcher.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|  currentState_reg   | Flip-flop |   2   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine fetcher_addressSize32 line 38 in file
+		'../rtl/fetch/fetcher.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|    addr_out_reg     | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+|      stall_reg      | Latch |   1   |  N  | N  | N  | N  | -  | -  | -  |
+|    nextState_reg    | Latch |   2   |  Y  | N  | N  | N  | -  | -  | -  |
+|       ir_reg        | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+|    proc_req_reg     | Latch |   1   |  N  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+Warning:  ../rtl/fetch/fetcher.sv:38: Netlist for always_comb block contains a latch. (ELAB-974)
+Presto compilation completed successfully. (fetcher_addressSize32)
+Information: Building the design 'register_generator' instantiated from design 'decodeUnit_nbits32_bits32' with
+	the parameters "32". (HDL-193)
+
+Statistics for case statements in always block at line 19 in file
+	'../rtl/decode/reg_generator.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            23            |    auto/auto     |
+|            84            |    auto/auto     |
+===============================================
+
+Inferred memory devices in process
+	in routine register_generator_nbits32 line 19 in file
+		'../rtl/decode/reg_generator.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|      IMM12_reg      | Latch |  12   |  Y  | N  | N  | N  | -  | -  | -  |
+|      IMM32_reg      | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+|      IMM20_reg      | Latch |  20   |  Y  | N  | N  | N  | -  | -  | -  |
+|       RS1_reg       | Latch |   5   |  Y  | N  | N  | N  | -  | -  | -  |
+|       RS2_reg       | Latch |   5   |  Y  | N  | N  | N  | -  | -  | -  |
+|       RD_reg        | Latch |   5   |  Y  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+Warning:  ../rtl/decode/reg_generator.sv:19: Netlist for always_comb block contains a latch. (ELAB-974)
+Presto compilation completed successfully. (register_generator_nbits32)
+Information: Building the design 'REGISTER_FILE' instantiated from design 'decodeUnit_nbits32_bits32' with
+	the parameters "32". (HDL-193)
+
+Inferred memory devices in process
+	in routine REGISTER_FILE_NBITS32 line 21 in file
+		'../rtl/decode/RegisterFile.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|    registers_reg    | Latch | 1024  |  Y  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+Statistics for MUX_OPs
+==============================================================
+|     block name/line      | Inputs | Outputs | # sel inputs |
+==============================================================
+| REGISTER_FILE_NBITS32/31 |   32   |   32    |      5       |
+| REGISTER_FILE_NBITS32/37 |   32   |   32    |      5       |
+==============================================================
+Warning:  ../rtl/decode/RegisterFile.sv:21: Netlist for always_comb block contains a latch. (ELAB-974)
+Presto compilation completed successfully. (REGISTER_FILE_NBITS32)
+Information: Building the design 'register_generic' instantiated from design 'decodeUnit_nbits32_bits32' with
+	the parameters "13". (HDL-193)
+
+Inferred memory devices in process
+	in routine register_generic_nbits13 line 12 in file
+		'../rtl/basic_elements/register_generic.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    register_reg     | Flip-flop |  13   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Warning:  ../rtl/basic_elements/register_generic.sv:26: Netlist for always_ff block is empty. (ELAB-984)
+Presto compilation completed successfully. (register_generic_nbits13)
+Information: Building the design 'register_generic' instantiated from design 'decodeUnit_nbits32_bits32' with
+	the parameters "4". (HDL-193)
+
+Inferred memory devices in process
+	in routine register_generic_nbits4 line 12 in file
+		'../rtl/basic_elements/register_generic.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    register_reg     | Flip-flop |   4   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Warning:  ../rtl/basic_elements/register_generic.sv:26: Netlist for always_ff block is empty. (ELAB-984)
+Presto compilation completed successfully. (register_generic_nbits4)
+Information: Building the design 'register_generic' instantiated from design 'decodeUnit_nbits32_bits32' with
+	the parameters "5". (HDL-193)
+
+Inferred memory devices in process
+	in routine register_generic_nbits5 line 12 in file
+		'../rtl/basic_elements/register_generic.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    register_reg     | Flip-flop |   5   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Warning:  ../rtl/basic_elements/register_generic.sv:26: Netlist for always_ff block is empty. (ELAB-984)
+Presto compilation completed successfully. (register_generic_nbits5)
+Information: Building the design 'ALU' instantiated from design 'execute_N32' with
+	the parameters "32". (HDL-193)
+
+Statistics for case statements in always block at line 12 in file
+	'../rtl/exe/alu.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            13            |    auto/auto     |
+===============================================
+
+Inferred memory devices in process
+	in routine ALU_N32 line 12 in file
+		'../rtl/exe/alu.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|      zero_reg       | Latch |   1   |  N  | N  | N  | N  | -  | -  | -  |
+|     result_reg      | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+Warning:  ../rtl/exe/alu.sv:12: Netlist for always_comb block contains a latch. (ELAB-974)
+Presto compilation completed successfully. (ALU_N32)
+Information: Building the design 'register_generic' instantiated from design 'execute_N32' with
+	the parameters "7". (HDL-193)
+
+Inferred memory devices in process
+	in routine register_generic_nbits7 line 12 in file
+		'../rtl/basic_elements/register_generic.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    register_reg     | Flip-flop |   7   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Warning:  ../rtl/basic_elements/register_generic.sv:26: Netlist for always_ff block is empty. (ELAB-984)
+Presto compilation completed successfully. (register_generic_nbits7)
+Information: Building the design 'register_generic' instantiated from design 'execute_N32' with
+	the parameters "1". (HDL-193)
+
+Inferred memory devices in process
+	in routine register_generic_nbits1 line 12 in file
+		'../rtl/basic_elements/register_generic.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    register_reg     | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Warning:  ../rtl/basic_elements/register_generic.sv:26: Netlist for always_ff block is empty. (ELAB-984)
+Presto compilation completed successfully. (register_generic_nbits1)
+Information: Building the design 'loadStore' instantiated from design 'memory_N32' with
+	the parameters "32,32". (HDL-193)
+
+Inferred memory devices in process
+	in routine loadStore_addressSize32_dataSize32 line 36 in file
+		'../rtl/mem/loadStore.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|      stall_reg      | Latch |   1   |  N  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+
+Inferred memory devices in process
+	in routine loadStore_addressSize32_dataSize32 line 49 in file
+		'../rtl/mem/loadStore.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|       we_reg        | Latch |   1   |  N  | N  | N  | N  | -  | -  | -  |
+|      addr_reg       | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+|      wdata_reg      | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+
+Inferred memory devices in process
+	in routine loadStore_addressSize32_dataSize32 line 57 in file
+		'../rtl/mem/loadStore.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|     memOpOn_reg     | Latch |   1   |  N  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+
+Inferred memory devices in process
+	in routine loadStore_addressSize32_dataSize32 line 68 in file
+		'../rtl/mem/loadStore.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|    proc_req_reg     | Latch |   1   |  N  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+
+Inferred memory devices in process
+	in routine loadStore_addressSize32_dataSize32 line 80 in file
+		'../rtl/mem/loadStore.sv'.
+===========================================================================
+|    Register Name    | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===========================================================================
+|    loadDest_reg     | Latch |   5   |  Y  | N  | N  | N  | -  | -  | -  |
+|    loadData_reg     | Latch |  32   |  Y  | N  | N  | N  | -  | -  | -  |
+===========================================================================
+
+Inferred memory devices in process
+	in routine loadStore_addressSize32_dataSize32 line 88 in file
+		'../rtl/mem/loadStore.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   prev_valid_reg    | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+| prev_mem_ready_reg  | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+|  prev_proc_req_reg  | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Warning:  ../rtl/mem/loadStore.sv:36: Netlist for always_comb block contains a latch. (ELAB-974)
+Warning:  ../rtl/mem/loadStore.sv:49: Netlist for always_comb block contains a latch. (ELAB-974)
+Warning:  ../rtl/mem/loadStore.sv:57: Netlist for always_comb block contains a latch. (ELAB-974)
+Warning:  ../rtl/mem/loadStore.sv:68: Netlist for always_comb block contains a latch. (ELAB-974)
+Warning:  ../rtl/mem/loadStore.sv:80: Netlist for always_comb block contains a latch. (ELAB-974)
+Presto compilation completed successfully. (loadStore_addressSize32_dataSize32)
+Information: Building the design 'register_generic' instantiated from design 'memory_N32' with
+	the parameters "3". (HDL-193)
+
+Inferred memory devices in process
+	in routine register_generic_nbits3 line 12 in file
+		'../rtl/basic_elements/register_generic.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    register_reg     | Flip-flop |   3   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Warning:  ../rtl/basic_elements/register_generic.sv:26: Netlist for always_ff block is empty. (ELAB-984)
+Presto compilation completed successfully. (register_generic_nbits3)
+1

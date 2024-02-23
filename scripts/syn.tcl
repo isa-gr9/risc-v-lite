@@ -33,36 +33,35 @@ suppress_message RTDC-126
 ######################################################################
 
 # Set the design to synthesize
-set active_design "risc"
-#set active_design "iir_advanced"
+set active_design "top"
 
 
 # DEFINE WORK DIRS
-set dirname "./results/${active_design}"
+set dirname "../syn/results/${active_design}"
 if {![file exists $dirname]} {
 	file mkdir $dirname
 }
 
 set libDir "./work/"
 file mkdir $libDir
-define_design_lib $active_design -path $libDir
+#define_design_lib $active_design -path $libDir
 
 
-analyze -format systemverilog -library $active_design {ffd.sv mux21generic.sv register_generic.sv cu.sv RegisterFile.sv reg_generator.sv decode.sv alu.sv execute.sv adder.sv fetcher.sv ifu.sv loadstoreunit.sv memory.sv wb.sv fwu.sv hdu.sv datapath.sv top.sv} > ${dirname}/${active_design}_analyze.txt
+analyze -format sv -library work {../rtl/basic_elements/ffd.sv ../rtl/basic_elements/mux21generic.sv ../rtl/basic_elements/register_generic.sv ../rtl/cu/cu.sv ../rtl/decode/RegisterFile.sv ../rtl/decode/reg_generator.sv ../rtl/decode/decode.sv ../rtl/exe/alu.sv ../rtl/exe/execute.sv ../rtl/fetch/adder.sv ../rtl/fetch/fetcher.sv ../rtl/fetch/ifu.sv ../rtl/mem/loadStore.sv ../rtl/mem/memory.sv ../rtl/wb/wb.sv ../rtl/fwu.sv ../rtl/hdu.sv ../rtl/datapath.sv ../rtl/top.sv} > ${dirname}/${active_design}_analyze.txt
 
 #Preserve rtl names for make the power consumption estimation easier
 set power_preserve_rtl_hier_names true
 
 
 # Elaborate design
-elaborate -lib $active_design $active_design > ${dirname}/${active_design}_elaborate.txt
+elaborate -lib work $active_design > ${dirname}/${active_design}_elaborate.txt
 
 ######################################################################
 ##
 ## SET DESIGN CONSTRAINTS
 ##
 ######################################################################
-source "./${active_design}.sdc"
+source "../syn/${active_design}.sdc"
 
 
 #####################################################################
@@ -108,7 +107,7 @@ change_names -hierarchy -rules verilog
 #Delay of the netlist
 write_sdf "${dirname}/${active_design}.sdf"
 #Netlist
-write -format systemverilog -hierarchy -output "${dirname}/${active_design}_postsyn_netlist.v"
+write -format verilog -hierarchy -output "${dirname}/${active_design}_postsyn_netlist.v"
 #design constraints
 write_sdc "${dirname}/${active_design}.sdc"
 

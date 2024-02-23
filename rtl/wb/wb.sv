@@ -3,9 +3,9 @@ module wb #(parameter N = 32) (
     input  logic [N-1:0]  ALUres,       // from memstage
     input  logic [N-1:0]  MEMread,      // Data read from memory
     input  logic [N-1:0]  NPCin,        // from MEM/WB reg
-    input  logic [5:0]    regDest_in,   // from MEM/WB Register destination
+    input  logic [4:0]    regDest_in,   // from MEM/WB Register destination
     output logic [N-1:0]  data_out,
-    output logic [5:0]    regDest_out,  // to RF register destination
+    output logic [4:0]    regDest_out,  // to RF register destination
     output logic          wr_en
 );
 

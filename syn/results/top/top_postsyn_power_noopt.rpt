@@ -1,0 +1,57 @@
+Loading db file '/eda/dk/nangate45/synopsys/NangateOpenCellLibrary_typical_ecsm_nowlm.db'
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : top
+Version: S-2021.06-SP4
+Date   : Fri Feb 23 18:23:27 2024
+****************************************
+
+
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /eda/dk/nangate45/synopsys/NangateOpenCellLibrary_typical_ecsm_nowlm.db)
+
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+top                    5K_hvratio_1_1    NangateOpenCellLibrary
+
+
+Global Operating Voltage = 1.1  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000ff
+    Time Units = 1ns
+    Dynamic Power Units = 1uW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+  Cell Internal Power  =   3.3521 mW   (93%)
+  Net Switching Power  = 260.2457 uW    (7%)
+                         ---------
+Total Dynamic Power    =   3.6124 mW  (100%)
+
+Cell Leakage Power     = 257.9379 uW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
+register       3.0266e+03           28.6114        5.1187e+04        3.1064e+03  (  80.26%)
+sequential       211.2023            6.6576        5.4515e+04          272.3748  (   7.04%)
+combinational    114.3456          224.9752        1.5224e+05          491.5588  (  12.70%)
+--------------------------------------------------------------------------------------------------
+Total          3.3521e+03 uW       260.2442 uW     2.5794e+05 nW     3.8703e+03 uW
+1

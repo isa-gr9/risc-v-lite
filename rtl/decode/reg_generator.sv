@@ -14,41 +14,49 @@ logic [1:0] S;  // Sign extend bits depending on the instruction
                 // S = 00 -> No sign extend
                 // S = 01 -> Sign extend 12 bits
                 // S = 10 -> Sign extend 20 bits
+				// S = 11 -> Sign extension for JAL immediates (they need to be shifted by4)
 
 always_comb begin
     OPCODE = IR_IN[6:0]; // For each kind of instruction the first 7 bits are the opcode
 
     
     case (OPCODE)
-        7'b11: begin // LOAD
+        7'b0000011: begin // LOAD
             RS1 = IR_IN[19:15];
+            RS2 = 5'd0;
             RD = IR_IN[11:7];
             IMM12 = IR_IN[31:20];
             S = 2'b01;
         end
-        7'b10011: begin // I-Type
+        7'b0010011: begin // I-Type
             RS1 = IR_IN[19:15];
+            RS2 = 5'd0;
             RD = IR_IN[11:7];
             IMM12 = IR_IN[31:20];
             S = 2'b01;
         end
-        7'b10111: begin // AUIPC
+        7'b0010111: begin // AUIPC
             IMM32 = {IR_IN[31:12], 12'b0};
+            RS1 = 5'd0;
+            RS2 = 5'd0;
+            RD = IR_IN[11:7];
             S = 2'b00;
         end
-        7'b100011: begin // STORE
+        7'b0100011: begin // STORE
             RS1 = IR_IN[19:15];
             RS2 = IR_IN[24:20];
             IMM12 = {IR_IN[31:25], IR_IN[11:7]};
             S = 2'b01;
         end
-        7'b110011: begin // R-Type
+        7'b0110011: begin // R-Type
             RS1 = IR_IN[19:15];
             RS2 = IR_IN[24:20];
             RD = IR_IN[11:7];
             S = 2'b00;
         end
-        7'b110111: begin // LUI
+        7'b0110111: begin // LUI
+            RS1 = 5'd0;
+            RS2 = 5'd0;
             RD = IR_IN[11:7];
             IMM32 = {IR_IN[31:12], 12'b0};
             S = 2'b00;
@@ -60,6 +68,8 @@ always_comb begin
             S = 2'b01;
         end
         7'b1101111: begin // JUMP
+            RS1 = 5'd0;
+            RS2 = 5'd0;
             RD = IR_IN[11:7];
             IMM20 = {IR_IN[31], IR_IN[19:12], IR_IN[20], IR_IN[30:21]};
             S = 2'b10;
@@ -86,6 +96,13 @@ always_comb begin
                 IMM = {20'h00000, IMM12};
             end
         end
+        // 2'b11: begin // jal case, immediate shifted by 4
+        // 	 if (IMM20[19] == 1'b1) begin
+        //         IMM = {11'h7FF, IMM20, 1'b0};
+        //     end else begin 
+        //         IMM = {11'h000, IMM20, 1'b0};
+        //     end
+        // end
         default: begin
             IMM = IMM32;
         end
